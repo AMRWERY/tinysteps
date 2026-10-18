@@ -1,0 +1,162 @@
+/* ==========================================================================
+   TinySteps Design System Tokens
+   Defined based on design.md specification
+   ========================================================================== */
+
+:root {
+  /* Light Theme Color Tokens */
+  --color-background: 247 246 241;     /* #F7F6F1 - Main app background; warm off-white */
+  --color-surface: 255 255 255;        /* #FFFFFF - Main cards, dialogs, inputs */
+  --color-surface-subtle: 240 241 234; /* #F0F1EA - Secondary panels, icon containers */
+  --color-surface-raised: 255 255 255; /* #FFFFFF - Menus, popovers, elevated surfaces */
+  --color-text-primary: 38 49 43;      /* #26312B - Main headings and body text */
+  --color-text-secondary: 105 116 108; /* #69746C - Supporting text and metadata */
+  --color-border: 225 229 220;         /* #E1E5DC - Dividers, inputs, card outlines */
+  --color-primary: 88 122 102;         /* #587A66 - Primary actions and selected states */
+  --color-primary-hover: 71 102 83;    /* #476653 - Primary action hover/pressed state */
+  --color-primary-soft: 229 238 231;   /* #E5EEE7 - Tinted primary surfaces */
+  --color-accent: 217 149 126;         /* #D9957E - Small highlights and selected illustrations */
+  --color-accent-soft: 247 232 225;    /* #F7E8E1 - Gentle peach backgrounds */
+  --color-success: 66 118 91;          /* #42765B - Confirmations only */
+  --color-warning: 148 106 52;         /* #946A34 - Non-urgent caution where needed */
+  --color-danger: 185 79 79;           /* #B94F4F - Destructive actions and errors */
+
+  /* Hex representations for non-Tailwind consumers */
+  --hex-background: #F7F6F1;
+  --hex-surface: #FFFFFF;
+  --hex-surface-subtle: #F0F1EA;
+  --hex-surface-raised: #FFFFFF;
+  --hex-text-primary: #26312B;
+  --hex-text-secondary: #69746C;
+  --hex-border: #E1E5DC;
+  --hex-primary: #587A66;
+  --hex-primary-hover: #476653;
+  --hex-primary-soft: #E5EEE7;
+  --hex-accent: #D9957E;
+  --hex-accent-soft: #F7E8E1;
+  --hex-success: #42765B;
+  --hex-warning: #946A34;
+  --hex-danger: #B94F4F;
+}
+
+.dark {
+  /* Dark Theme Color Tokens */
+  --color-background: 20 25 22;        /* #141916 - Main app background; avoid pure black */
+  --color-surface: 28 36 31;           /* #1C241F - Main cards, dialogs, inputs */
+  --color-surface-subtle: 36 46 39;    /* #242E27 - Secondary panels and icon containers */
+  --color-surface-raised: 41 52 45;    /* #29342D - Menus, popovers, elevated surfaces */
+  --color-text-primary: 241 244 238;   /* #F1F4EE - Main headings and body text */
+  --color-text-secondary: 176 187 177; /* #B0BBB1 - Supporting text and metadata */
+  --color-border: 53 66 57;            /* #354239 - Dividers, inputs, card outlines */
+  --color-primary: 166 199 175;        /* #A6C7AF - Primary actions and selected states */
+  --color-primary-hover: 189 216 196;  /* #BDD8C4 - Primary action hover/pressed state */
+  --color-primary-soft: 41 59 48;      /* #293B30 - Tinted primary surfaces */
+  --color-accent: 232 170 148;         /* #E8AA94 - Small highlights and selected illustrations */
+  --color-accent-soft: 58 42 37;       /* #3A2A25 - Gentle peach backgrounds */
+  --color-success: 158 208 173;        /* #9ED0AD - Confirmations only */
+  --color-warning: 227 190 122;        /* #E3BE7A - Non-urgent caution where needed */
+  --color-danger: 240 160 160;         /* #F0A0A0 - Destructive actions and errors */
+
+  /* Hex representations for non-Tailwind consumers */
+  --hex-background: #141916;
+  --hex-surface: #1C241F;
+  --hex-surface-subtle: #242E27;
+  --hex-surface-raised: #29342D;
+  --hex-text-primary: #F1F4EE;
+  --hex-text-secondary: #B0BBB1;
+  --hex-border: #354239;
+  --hex-primary: #A6C7AF;
+  --hex-primary-hover: #BDD8C4;
+  --hex-primary-soft: #293B30;
+  --hex-accent: #E8AA94;
+  --hex-accent-soft: #3A2A25;
+  --hex-success: #9ED0AD;
+  --hex-warning: #E3BE7A;
+  --hex-danger: #F0A0A0;
+}
+
+/* ==========================================================================
+   Base App Styles
+   ========================================================================== */
+
+html {
+  font-family: 'Montserrat', 'IBM Plex Sans Arabic', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-text-primary));
+  min-height: 100vh;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular numerals for times, durations, quantities */
+.tabular-nums,
+[data-tabular-nums] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Motion & Interaction Tokens (design.md Section 4)
+   ========================================================================== */
+
+/* Button press feedback: subtle scale to 0.98 in 100-140ms */
+.btn-press {
+  transition: transform 120ms ease, background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.btn-press:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Subtle focus ring for accessibility */
+.focus-ring:focus-visible {
+  outline: 2px solid rgb(var(--color-primary));
+  outline-offset: 2px;
+}
+
+/* Card base */
+.card-surface {
+  background-color: rgb(var(--color-surface));
+  border: 1px solid rgb(var(--color-border));
+  border-radius: 16px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+/* Page transitions */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* ==========================================================================
+   Reduced Motion Support (design.md Section 4 & 6)
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

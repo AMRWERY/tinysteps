@@ -1,0 +1,64 @@
+{
+  "app": {
+    "name": "TinySteps",
+    "tagline": "Little routines. Less mental load."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "timeline": "Timeline",
+    "history": "History",
+    "profile": "Baby Profile",
+    "settings": "Settings"
+  },
+  "routines": {
+    "feeding": "Feeding",
+    "sleep": "Sleep",
+    "diaper": "Diaper",
+    "quickLog": "Quick Log",
+    "breastfeeding": "Breastfeeding",
+    "bottle": "Bottle Feeding",
+    "amount": "Amount",
+    "ml": "ml",
+    "duration": "Duration",
+    "minutes": "min",
+    "side": "Side",
+    "left": "Left",
+    "right": "Right",
+    "both": "Both",
+    "wet": "Wet",
+    "dirty": "Dirty",
+    "mixed": "Mixed",
+    "activeSleep": "Sleep session active",
+    "startSleep": "Start Sleep",
+    "stopSleep": "Stop Sleep",
+    "manualEntry": "Manual Entry",
+    "notes": "Notes (optional)",
+    "time": "Time"
+  },
+  "timeline": {
+    "today": "Today",
+    "savedToTimeline": "Saved to today’s timeline",
+    "noEvents": "Nothing logged yet",
+    "addFirst": "Add your first routine",
+    "littleNote": "A little note for today",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this event?"
+  },
+  "settings": {
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "language": "Language",
+    "english": "English",
+    "arabic": "العربية"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "saving": "Saving...",
+    "close": "Close"
+  }
+}

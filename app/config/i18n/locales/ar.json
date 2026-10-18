@@ -1,0 +1,64 @@
+{
+  "app": {
+    "name": "تايني ستيبس",
+    "tagline": "روتين بسيط. راحة بال أكثر."
+  },
+  "nav": {
+    "dashboard": "الرئيسية",
+    "timeline": "الجدول اليومي",
+    "history": "السجل",
+    "profile": "ملف الطفل",
+    "settings": "الإعدادات"
+  },
+  "routines": {
+    "feeding": "الرضاعة",
+    "sleep": "النوم",
+    "diaper": "الحفاض",
+    "quickLog": "تسجيل سريع",
+    "breastfeeding": "رضاعة طبيعية",
+    "bottle": "رضاعة صناعية",
+    "amount": "الكمية",
+    "ml": "مل",
+    "duration": "المدة",
+    "minutes": "دقيقة",
+    "side": "الجانب",
+    "left": "أيسر",
+    "right": "أيمن",
+    "both": "كلاهما",
+    "wet": "مبلل",
+    "dirty": "متسخ",
+    "mixed": "مختلط",
+    "activeSleep": "جلسة نوم جارية",
+    "startSleep": "بدء النوم",
+    "stopSleep": "استيقاظ الطفل",
+    "manualEntry": "إدخال يدوي",
+    "notes": "ملاحظات (اختياري)",
+    "time": "الوقت"
+  },
+  "timeline": {
+    "today": "اليوم",
+    "savedToTimeline": "تم الحفظ في جدول اليوم",
+    "noEvents": "لم يتم تسجيل أي روتين بعد",
+    "addFirst": "سجّل أول روتين لليوم",
+    "littleNote": "ملاحظة صغيرة لليوم",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "confirmDelete": "هل أنت متأكد من حذف هذا التسجيل؟"
+  },
+  "settings": {
+    "theme": "المظهر",
+    "light": "فاتح",
+    "dark": "داكن",
+    "system": "تلقائي (حسب النظام)",
+    "language": "اللغة",
+    "english": "English",
+    "arabic": "العربية"
+  },
+  "actions": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "saving": "جارٍ الحفظ...",
+    "close": "إغلاق"
+  }
+}
