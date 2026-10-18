@@ -7,8 +7,6 @@ export interface RoutineEvent {
     time: string
 }
 
-export type EventType = 'all' | 'feed' | 'sleep' | 'diaper';
-
 export interface TimelineItem {
     id: string;
     type: 'sleep' | 'feed' | 'diaper';
@@ -24,3 +22,27 @@ export interface TimelineItem {
 }
 
 export type ThemeMode = 'light' | 'dark';
+
+export type AppState = 'active-sleep' | 'baby-awake' | 'first-run' | 'loading';
+
+export interface TimelineEntry {
+    id: string;
+    type: 'feed' | 'sleep' | 'diaper';
+    title: string;
+    badge: string;
+    badgeColor?: 'primary' | 'accent' | 'subtle' | 'warning';
+    time: string;
+    timeContext?: string;
+    description: string;
+    loggedBy?: string;
+    isActive?: boolean;
+}
+
+export interface Caregiver {
+    id: string;
+    name: string;
+    role: string;
+    avatarUrl: string;
+    lastActive: string;
+    isOnline: boolean;
+}

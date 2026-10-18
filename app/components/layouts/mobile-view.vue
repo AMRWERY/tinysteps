@@ -17,7 +17,9 @@
 
       <div class="flex items-center gap-2">
         <LazyVLocaleSwitcher />
+
         <LazyVThemeSwitcher />
+        
         <img src="/img/img-01.png" alt="Maya" class="w-8 h-8 rounded-full object-cover border border-app-border" />
       </div>
     </header>
