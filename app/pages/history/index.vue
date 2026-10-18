@@ -1,10 +1,10 @@
 <template>
   <div class="w-full max-w-[1240px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
     <!-- 1. Interactive Preview Toolbar -->
-    <history-preview-toolbar v-model="previewState" />
+    <preview-toolbar v-model="previewState" />
 
     <!-- 2. Page Header: title + date nav + CTA -->
-    <history-page-header :selected-date="selectedDate" @log-past-event="handleLogPastEvent" @prev-day="goToPrevDay"
+    <page-header :selected-date="selectedDate" @log-past-event="handleLogPastEvent" @prev-day="goToPrevDay"
       @next-day="goToNextDay" @jump-to-today="jumpToToday" />
 
     <!-- 3. Mobile Week Strip -->
@@ -26,7 +26,7 @@
     </div>
 
     <!-- 4. Filter Pills Bar -->
-    <history-filter-bar v-model="activeFilter" v-model:is-reversed="isReversed" :all-count="allEvents.length"
+    <filter-bar v-model="activeFilter" v-model:is-reversed="isReversed" :all-count="allEvents.length"
       :feed-count="feedCount" :sleep-count="sleepCount" :diaper-count="diaperCount" />
 
     <!-- 5. Two-column main grid -->
@@ -35,16 +35,16 @@
       <!-- Left / Main column (8 cols on desktop) -->
       <div class="lg:col-span-8 space-y-5">
         <!-- Day at a Glance -->
-        <history-day-glance-card :summary="summary" />
+        <day-glance-card :summary="summary" />
 
         <!-- Timeline of Events -->
-        <history-timeline-of-events :events="processedEvents" :preview-state="previewState" :is-reversed="isReversed"
+        <timeline-of-events :events="processedEvents" :preview-state="previewState" :is-reversed="isReversed"
           @log-past-event="handleLogPastEvent" />
       </div>
 
       <!-- Right column (4 cols on desktop) -->
       <div class="lg:col-span-4">
-        <history-right-rail @export-digest="handleExportDigest" />
+        <right-rail @export-digest="handleExportDigest" />
       </div>
 
     </div>

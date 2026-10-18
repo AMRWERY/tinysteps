@@ -372,7 +372,7 @@
         <Icon name="lucide:calendar" class="w-5 h-5" />
         <span class="text-[10px]">History</span>
       </nuxt-link-locale>
-      <nuxt-link-locale to="/baby-profile-profile"
+      <nuxt-link-locale to="/baby-profile"
         class="flex flex-col items-center gap-0.5 min-w-[56px] min-h-[44px] justify-center text-app-text-secondary font-medium"
         active-class="!text-app-primary font-bold">
         <Icon name="lucide:baby" class="w-5 h-5" />
