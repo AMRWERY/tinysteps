@@ -64,4 +64,9 @@ const handleWakeAndSave = () => {
 const handleQuickLog = (type: string) => {
   console.log('Quick log action triggered:', type)
 }
+
+useSeoMeta({
+  title: 'Tiny Steps - Baby Routine Tracker',
+  description: 'Track your baby\'s daily routine including feeding, sleeping, and diaper changes.',
+})
 </script>

@@ -19,7 +19,7 @@
         <LazyVLocaleSwitcher />
 
         <LazyVThemeSwitcher />
-        
+
         <img src="/img/img-01.png" alt="Maya" class="w-8 h-8 rounded-full object-cover border border-app-border" />
       </div>
     </header>
@@ -248,29 +248,33 @@
     <!-- Bottom Navigation Bar (Ergonomic & thumb-friendly) -->
     <nav
       class="fixed bottom-0 inset-x-0 bg-app-surface border-t border-app-border flex items-center justify-around py-2.5 px-4 z-30">
-      <button @click="activeTab = 'dashboard'"
-        :class="['flex flex-col items-center gap-1 min-w-[56px] min-h-[44px] justify-center transition-colors', activeTab === 'dashboard' ? 'text-app-primary font-bold' : 'text-app-text-secondary font-medium']">
+      <nuxt-link-locale to="/" exact
+        class="flex flex-col items-center gap-1 min-w-[56px] min-h-[44px] justify-center transition-colors text-app-text-secondary font-medium"
+        active-class="!text-app-primary font-bold">
         <Icon name="lucide:layout-grid" class="w-5 h-5" />
         <span class="text-[10px]">Dashboard</span>
-      </button>
+      </nuxt-link-locale>
 
-      <button @click="activeTab = 'history'"
-        :class="['flex flex-col items-center gap-1 min-w-[56px] min-h-[44px] justify-center transition-colors', activeTab === 'history' ? 'text-app-primary font-bold' : 'text-app-text-secondary font-medium']">
+      <nuxt-link-locale to="/history"
+        class="flex flex-col items-center gap-1 min-w-[56px] min-h-[44px] justify-center transition-colors text-app-text-secondary font-medium"
+        active-class="!text-app-primary font-bold">
         <Icon name="lucide:calendar" class="w-5 h-5" />
         <span class="text-[10px]">History</span>
-      </button>
+      </nuxt-link-locale>
 
-      <button @click="activeTab = 'baby'"
-        :class="['flex flex-col items-center gap-1 min-w-[56px] min-h-[44px] justify-center transition-colors', activeTab === 'baby' ? 'text-app-primary font-bold' : 'text-app-text-secondary font-medium']">
+      <nuxt-link-locale to="/baby-profile"
+        class="flex flex-col items-center gap-1 min-w-[56px] min-h-[44px] justify-center transition-colors text-app-text-secondary font-medium"
+        active-class="!text-app-primary font-bold">
         <Icon name="lucide:smile" class="w-5 h-5" />
         <span class="text-[10px]">Baby</span>
-      </button>
+      </nuxt-link-locale>
 
-      <button @click="activeTab = 'settings'"
-        :class="['flex flex-col items-center gap-1 min-w-[56px] min-h-[44px] justify-center transition-colors', activeTab === 'settings' ? 'text-app-primary font-bold' : 'text-app-text-secondary font-medium']">
+      <nuxt-link-locale to="/settings"
+        class="flex flex-col items-center gap-1 min-w-[56px] min-h-[44px] justify-center transition-colors text-app-text-secondary font-medium"
+        active-class="!text-app-primary font-bold">
         <Icon name="lucide:settings" class="w-5 h-5" />
         <span class="text-[10px]">Settings</span>
-      </button>
+      </nuxt-link-locale>
     </nav>
   </div>
 </template>
@@ -285,6 +289,4 @@ defineProps<{
 const emit = defineEmits<{
   (e: 'setTheme', mode: ThemeMode): void
 }>()
-
-const activeTab = ref<'dashboard' | 'history' | 'baby' | 'settings'>('dashboard')
 </script>

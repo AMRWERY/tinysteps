@@ -27,11 +27,10 @@
       <!-- ─── State Preview Pills ─────────────────────────────── -->
       <div
         class="flex items-center gap-1 bg-app-surface-subtle p-1 rounded-xl text-[11px] font-semibold overflow-x-auto no-scrollbar">
-        <button v-for="pill in previewPills" :key="pill.value" @click="emit('update:state', pill.value as any)"
-          :class="['whitespace-nowrap px-2.5 py-1.5 rounded-lg text-center transition-colors shrink-0',
-            state === pill.value
-              ? 'bg-app-surface text-app-text-primary shadow-xs'
-              : 'text-app-text-secondary']">
+        <button v-for="pill in previewPills" :key="pill.value" @click="emit('update:state', pill.value as any)" :class="['whitespace-nowrap px-2.5 py-1.5 rounded-lg text-center transition-colors shrink-0',
+          state === pill.value
+            ? 'bg-app-surface text-app-text-primary shadow-xs'
+            : 'text-app-text-secondary']">
           {{ pill.label }}
         </button>
       </div>
@@ -63,11 +62,10 @@
 
         <!-- Day-of-week strip -->
         <div class="flex items-center gap-1.5 mt-3 overflow-x-auto no-scrollbar pb-1">
-          <button v-for="day in weekDays" :key="day.name"
-            :class="['flex flex-col items-center px-3 py-2 rounded-xl transition-colors shrink-0',
-              day.active
-                ? 'bg-app-primary text-white'
-                : 'bg-app-surface border border-app-border text-app-text-secondary']">
+          <button v-for="day in weekDays" :key="day.name" :class="['flex flex-col items-center px-3 py-2 rounded-xl transition-colors shrink-0',
+            day.active
+              ? 'bg-app-primary text-white'
+              : 'bg-app-surface border border-app-border text-app-text-secondary']">
             <span class="text-[9px] font-bold uppercase tracking-wider">{{ day.name }}</span>
             <span :class="['text-sm font-bold mt-0.5', day.active ? 'text-white' : 'text-app-text-primary']">
               {{ day.label }}
@@ -129,11 +127,10 @@
       <div class="space-y-3">
         <!-- Filter row -->
         <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5">
-          <button v-for="f in filters" :key="f.value" @click="activeFilter = f.value"
-            :class="['flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-colors shrink-0',
-              activeFilter === f.value
-                ? 'bg-app-text-primary text-app-bg'
-                : 'bg-app-surface border border-app-border text-app-text-secondary']">
+          <button v-for="f in filters" :key="f.value" @click="activeFilter = f.value" :class="['flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-colors shrink-0',
+            activeFilter === f.value
+              ? 'bg-app-text-primary text-app-bg'
+              : 'bg-app-surface border border-app-border text-app-text-secondary']">
             <span v-if="f.dot" :class="['w-1.5 h-1.5 rounded-full', f.dotClass]"></span>
             {{ f.label }}
           </button>
@@ -216,8 +213,7 @@
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center gap-1.5 flex-wrap">
                     <span class="font-bold text-xs text-app-text-primary">Afternoon Nap</span>
-                    <span
-                      class="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-app-primary-soft text-app-primary">1h
+                    <span class="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-app-primary-soft text-app-primary">1h
                       30m</span>
                   </div>
                   <p class="text-[11px] text-app-text-secondary mt-1 leading-relaxed">
@@ -281,8 +277,7 @@
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center gap-1.5 flex-wrap">
                     <span class="font-bold text-xs text-app-text-primary">Morning Nap</span>
-                    <span
-                      class="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-app-primary-soft text-app-primary">1h
+                    <span class="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-app-primary-soft text-app-primary">1h
                       00m</span>
                   </div>
                   <p class="text-[11px] text-app-text-secondary mt-1 leading-relaxed">
@@ -365,26 +360,30 @@
     <!-- ─── Bottom Navigation Bar ──────────────────────────────── -->
     <nav
       class="fixed bottom-0 inset-x-0 bg-app-surface/95 backdrop-blur-md border-t border-app-border flex items-center justify-around py-2.5 px-4 z-30">
-      <button
-        class="flex flex-col items-center gap-0.5 min-w-[56px] min-h-[44px] justify-center text-app-primary font-bold">
+      <nuxt-link-locale to="/" exact
+        class="flex flex-col items-center gap-0.5 min-w-[56px] min-h-[44px] justify-center text-app-text-secondary font-medium"
+        active-class="!text-app-primary font-bold">
         <Icon name="lucide:layout-grid" class="w-5 h-5" />
-        <span class="text-[10px] font-semibold">Dashboard</span>
-      </button>
-      <button
-        class="flex flex-col items-center gap-0.5 min-w-[56px] min-h-[44px] justify-center text-app-text-secondary font-medium">
+        <span class="text-[10px]">Dashboard</span>
+      </nuxt-link-locale>
+      <nuxt-link-locale to="/history"
+        class="flex flex-col items-center gap-0.5 min-w-[56px] min-h-[44px] justify-center text-app-text-secondary font-medium"
+        active-class="!text-app-primary font-bold">
         <Icon name="lucide:calendar" class="w-5 h-5" />
         <span class="text-[10px]">History</span>
-      </button>
-      <button
-        class="flex flex-col items-center gap-0.5 min-w-[56px] min-h-[44px] justify-center text-app-text-secondary font-medium">
+      </nuxt-link-locale>
+      <nuxt-link-locale to="/baby-profile-profile"
+        class="flex flex-col items-center gap-0.5 min-w-[56px] min-h-[44px] justify-center text-app-text-secondary font-medium"
+        active-class="!text-app-primary font-bold">
         <Icon name="lucide:baby" class="w-5 h-5" />
         <span class="text-[10px]">Baby</span>
-      </button>
-      <button
-        class="flex flex-col items-center gap-0.5 min-w-[56px] min-h-[44px] justify-center text-app-text-secondary font-medium">
+      </nuxt-link-locale>
+      <nuxt-link-locale to="/settings"
+        class="flex flex-col items-center gap-0.5 min-w-[56px] min-h-[44px] justify-center text-app-text-secondary font-medium"
+        active-class="!text-app-primary font-bold">
         <Icon name="lucide:settings" class="w-5 h-5" />
         <span class="text-[10px]">Settings</span>
-      </button>
+      </nuxt-link-locale>
     </nav>
 
   </div>
