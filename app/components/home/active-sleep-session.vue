@@ -4,7 +4,7 @@
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2.5">
         <div class="w-9 h-9 rounded-full bg-app-surface-subtle text-app-primary flex items-center justify-center">
-          <Icon icon="lucide:moon" class="w-5 h-5" />
+          <Icon name="lucide:moon" class="w-5 h-5" />
         </div>
         <div>
           <span class="text-[11px] font-bold tracking-wider text-app-text-secondary uppercase">Current Activity</span>
@@ -32,13 +32,13 @@
       <div class="flex items-center gap-2.5 shrink-0">
         <button @click="togglePause"
           class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-button border border-app-border bg-app-surface text-app-text-primary font-semibold text-sm hover:bg-app-surface-subtle active:scale-[0.98] transition-all min-h-[44px]">
-          <Icon :icon="isPaused ? 'lucide:play' : 'lucide:pause'" class="w-4 h-4" />
+          <Icon :name="isPaused ? 'lucide:play' : 'lucide:pause'" class="w-4 h-4" />
           <span>{{ isPaused ? 'Resume' : 'Pause' }}</span>
         </button>
 
         <button
           class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-button bg-app-primary text-white font-semibold text-sm hover:bg-app-primary-hover active:scale-[0.98] transition-all min-h-[44px] shadow-sm">
-          <Icon icon="lucide:check-circle" class="w-4 h-4" />
+          <Icon name="lucide:check-circle" class="w-4 h-4" />
           <span>Wake & Save</span>
         </button>
       </div>
@@ -62,7 +62,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 const isPaused = ref(false)
 const seconds = ref(42 * 60 + 21) // 00:42:21 starting point
 

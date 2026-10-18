@@ -23,4 +23,4 @@ export interface TimelineItem {
     isActive?: boolean;
 }
 
-export type ThemeMode = 'light' | 'dark' | 'system';
+export type ThemeMode = 'light' | 'dark';

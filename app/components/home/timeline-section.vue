@@ -3,7 +3,7 @@
     <!-- Header with Filter Pills -->
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <Icon icon="lucide:history" class="w-4 h-4 text-app-text-primary" />
+        <Icon name="lucide:history" class="w-4 h-4 text-app-text-primary" />
         <h3 class="font-bold text-base text-app-text-primary">Today's Timeline</h3>
       </div>
 
@@ -30,7 +30,7 @@
             item.type === 'diaper' ? 'bg-app-surface-subtle text-app-text-primary' : ''
           ]">
             <Icon
-              :icon="item.type === 'sleep' ? 'lucide:moon' : item.type === 'feed' ? 'lucide:utensils' : 'lucide:droplet'"
+              :name="item.type === 'sleep' ? 'lucide:moon' : item.type === 'feed' ? 'lucide:utensils' : 'lucide:droplet'"
               class="w-5 h-5" />
           </div>
 
@@ -54,7 +54,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import type { TimelineItem, EventType } from '~/types/home'
 
 const activeFilter = ref<EventType>('all')

@@ -1,4 +1,5 @@
 import type { ThemePreference } from '~/types/composables/useAppTheme'
+import type { ThemeMode } from '~/types/home'
 
 export const useAppTheme = () => {
   const colorMode = useColorMode({
@@ -12,16 +13,22 @@ export const useAppTheme = () => {
 
   const isDark = computed(() => colorMode.value === 'dark')
 
-  const setTheme = (pref: ThemePreference) => {
+  const currentTheme = computed<ThemeMode>(() => {
+    return isDark.value ? 'dark' : 'light'
+  })
+
+  const setTheme = (pref: ThemePreference | ThemeMode) => {
+    colorMode.preference = pref
     colorMode.value = pref
   }
 
   const toggleTheme = () => {
-    colorMode.value = isDark.value ? 'light' : 'dark'
+    setTheme(isDark.value ? 'light' : 'dark')
   }
 
   return {
     theme: colorMode,
+    currentTheme,
     isDark,
     setTheme,
     toggleTheme,

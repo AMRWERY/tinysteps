@@ -5,8 +5,7 @@
   ]">
     <!-- Brand Header -->
     <div class="flex items-center gap-3 py-3 px-2 mb-6">
-      <div
-        class="w-10 h-10 rounded-xl bg-app-primary-soft text-app-primary flex items-center justify-center shrink-0">
+      <div class="w-10 h-10 rounded-xl bg-app-primary-soft text-app-primary flex items-center justify-center shrink-0">
         <Icon name="lucide:map-pin" class="w-5 h-5" />
       </div>
       <div v-if="!isCollapsed" class="overflow-hidden">
@@ -46,39 +45,14 @@
       </button>
     </nav>
 
-    <!-- Bottom baby profile & Theme Switcher -->
-    <div class="pt-4 border-t border-app-border space-y-3">
-      <div
-        class="flex items-center justify-between p-2 rounded-xl bg-app-surface-subtle cursor-pointer hover:opacity-90">
-        <div class="flex items-center gap-2.5 min-w-0">
-          <img src="https://images.unsplash.com/photo-1544126592-807ade215a0b?w=80&auto=format&fit=crop&q=80"
-            alt="Maya" class="w-8 h-8 rounded-full object-cover shrink-0" />
-          <div v-if="!isCollapsed" class="text-left truncate">
-            <p class="text-xs font-semibold text-app-text-primary leading-none">Maya (3 mo)</p>
-            <span class="text-[10px] text-app-text-secondary">Active routine</span>
-          </div>
-        </div>
-        <Icon v-if="!isCollapsed" name="lucide:chevrons-up-down" class="w-4 h-4 text-app-text-secondary shrink-0" />
-      </div>
-
-      <!-- Theme Controls -->
-      <div class="flex items-center justify-around bg-app-surface-subtle p-1 rounded-xl">
-        <button @click="emit('setTheme', 'light')"
-          :class="['p-1.5 rounded-lg transition-colors', currentTheme === 'light' ? 'bg-app-surface shadow-sm text-app-primary' : 'text-app-text-secondary hover:text-app-text-primary']"
-          title="Light theme">
-          <Icon name="lucide:sun" class="w-4 h-4" />
-        </button>
-        <button @click="emit('setTheme', 'dark')"
-          :class="['p-1.5 rounded-lg transition-colors', currentTheme === 'dark' ? 'bg-app-surface shadow-sm text-app-primary' : 'text-app-text-secondary hover:text-app-text-primary']"
-          title="Dark theme">
-          <Icon name="lucide:moon" class="w-4 h-4" />
-        </button>
-        <button @click="emit('setTheme', 'system')"
-          :class="['p-1.5 rounded-lg transition-colors', currentTheme === 'system' ? 'bg-app-surface shadow-sm text-app-primary' : 'text-app-text-secondary hover:text-app-text-primary']"
-          title="System default">
-          <Icon name="lucide:laptop" class="w-4 h-4" />
-        </button>
-      </div>
+    <!-- Bottom Logout Action -->
+    <div class="pt-4 border-t border-app-border">
+      <button type="button"
+        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-medium text-app-text-secondary hover:text-danger hover:bg-danger/10 transition-colors btn-press focus-ring"
+        :title="isCollapsed ? 'Logout' : undefined" @click="emit('logout')">
+        <Icon name="lucide:log-out" class="w-5 h-5 shrink-0" />
+        <span v-if="!isCollapsed">Logout</span>
+      </button>
     </div>
   </aside>
 </template>
@@ -88,11 +62,12 @@ import type { ThemeMode } from '~/types/home'
 
 defineProps<{
   isCollapsed: boolean
-  currentTheme: ThemeMode
+  currentTheme?: ThemeMode
 }>()
 
 const emit = defineEmits<{
   (e: 'update:isCollapsed', value: boolean): void
   (e: 'setTheme', mode: ThemeMode): void
+  (e: 'logout'): void
 }>()
 </script>

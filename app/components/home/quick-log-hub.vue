@@ -2,7 +2,7 @@
   <div class="space-y-2.5">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-1.5 font-bold text-base text-app-text-primary">
-        <Icon icon="lucide:zap" class="w-4 h-4 text-app-text-primary" />
+        <Icon name="lucide:zap" class="w-4 h-4 text-app-text-primary" />
         <span>Instant Logging Hub</span>
       </div>
       <span class="text-xs text-app-text-secondary">Single-tap records</span>
@@ -14,9 +14,9 @@
         class="bg-app-surface border border-app-border rounded-2xl p-4 text-left hover:border-app-primary transition-all group active:scale-[0.98]">
         <div class="flex items-center justify-between mb-2">
           <div class="w-10 h-10 rounded-xl bg-app-accent-soft text-app-accent flex items-center justify-center">
-            <Icon icon="lucide:utensils" class="w-5 h-5" />
+            <Icon name="lucide:utensils" class="w-5 h-5" />
           </div>
-          <Icon icon="lucide:chevron-right"
+          <Icon name="lucide:chevron-right"
             class="w-4 h-4 text-app-text-secondary group-hover:translate-x-0.5 transition-transform" />
         </div>
         <h4 class="font-bold text-app-text-primary text-sm">Feeding</h4>
@@ -28,9 +28,9 @@
         class="bg-app-surface border border-app-border rounded-2xl p-4 text-left hover:border-app-primary transition-all group active:scale-[0.98]">
         <div class="flex items-center justify-between mb-2">
           <div class="w-10 h-10 rounded-xl bg-app-primary-soft text-app-primary flex items-center justify-center">
-            <Icon icon="lucide:droplet" class="w-5 h-5" />
+            <Icon name="lucide:droplet" class="w-5 h-5" />
           </div>
-          <Icon icon="lucide:chevron-right"
+          <Icon name="lucide:chevron-right"
             class="w-4 h-4 text-app-text-secondary group-hover:translate-x-0.5 transition-transform" />
         </div>
         <h4 class="font-bold text-app-text-primary text-sm">Diaper</h4>
@@ -43,9 +43,9 @@
         <div class="flex items-center justify-between mb-2">
           <div
             class="w-10 h-10 rounded-xl bg-app-surface-subtle text-app-text-primary flex items-center justify-center">
-            <Icon icon="lucide:activity" class="w-5 h-5" />
+            <Icon name="lucide:activity" class="w-5 h-5" />
           </div>
-          <Icon icon="lucide:chevron-right"
+          <Icon name="lucide:chevron-right"
             class="w-4 h-4 text-app-text-secondary group-hover:translate-x-0.5 transition-transform" />
         </div>
         <h4 class="font-bold text-app-text-primary text-sm">Tummy Time</h4>
@@ -55,7 +55,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 defineEmits<{
   (e: 'log', type: string): void
 }>()
