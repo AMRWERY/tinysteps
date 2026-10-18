@@ -49,8 +49,14 @@
       </div>
     </div>
 
-    <!-- Mobile View Component (from components/layouts/mobile-view.vue, matches Screenshot 2) -->
-    <MobileView :current-theme="currentTheme" @set-theme="setTheme" />
+    <!-- Mobile View Component (from components/home/mobile-refined-view.vue) -->
+    <mobile-refined-view
+      :state="mobileState"
+      :timer-string="formattedTimer"
+      :timeline="[]"
+      :current-theme="currentTheme"
+      @update:state="mobileState = $event"
+      @set-theme="setTheme" />
   </div>
 </template>
 
@@ -59,6 +65,19 @@ const { locale, locales } = useI18n()
 const { currentTheme, setTheme } = useAppTheme()
 
 const isCollapsed = ref(false)
+const mobileState = ref<'active-sleep' | 'baby-awake' | 'first-run' | 'loading'>('active-sleep')
+
+// Simple elapsed timer for the mobile state preview
+const elapsedSeconds = ref(48 * 60 + 19)
+onMounted(() => {
+  setInterval(() => { if (mobileState.value === 'active-sleep') elapsedSeconds.value++ }, 1000)
+})
+const formattedTimer = computed(() => {
+  const h = Math.floor(elapsedSeconds.value / 3600)
+  const m = Math.floor((elapsedSeconds.value % 3600) / 60)
+  const s = elapsedSeconds.value % 60
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+})
 
 const handleLogout = () => {
   console.log('Logging out...')

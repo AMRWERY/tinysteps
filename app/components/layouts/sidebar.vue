@@ -16,36 +16,44 @@
 
     <!-- Navigation links -->
     <nav class="flex-1 space-y-1">
-      <button
-        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-semibold bg-app-primary-soft text-app-primary transition-colors"
+      <nuxt-link-locale to="/" :class="[
+        'w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-medium transition-colors',
+        'text-app-text-secondary hover:bg-app-surface-subtle hover:text-app-text-primary',
+      ]" active-class="bg-app-primary-soft !text-app-primary font-semibold" exact
         :title="isCollapsed ? 'Dashboard' : undefined">
         <Icon name="lucide:layout-grid" class="w-5 h-5 shrink-0" />
         <span v-if="!isCollapsed">Dashboard</span>
-      </button>
+      </nuxt-link-locale>
 
-      <button
-        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-medium text-app-text-secondary hover:bg-app-surface-subtle transition-colors"
+      <nuxt-link-locale to="/history" :class="[
+        'w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-medium transition-colors',
+        'text-app-text-secondary hover:bg-app-surface-subtle hover:text-app-text-primary',
+      ]" active-class="bg-app-primary-soft !text-app-primary font-semibold"
         :title="isCollapsed ? 'History' : undefined">
         <Icon name="lucide:history" class="w-5 h-5 shrink-0" />
         <span v-if="!isCollapsed">History</span>
-      </button>
+      </nuxt-link-locale>
 
-      <button
-        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-medium text-app-text-secondary hover:bg-app-surface-subtle transition-colors"
+      <nuxt-link-locale to="/baby-profile" :class="[
+        'w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-medium transition-colors',
+        'text-app-text-secondary hover:bg-app-surface-subtle hover:text-app-text-primary',
+      ]" active-class="bg-app-primary-soft !text-app-primary font-semibold"
         :title="isCollapsed ? 'Baby Profile' : undefined">
         <Icon name="lucide:smile" class="w-5 h-5 shrink-0" />
         <span v-if="!isCollapsed">Baby Profile</span>
-      </button>
+      </nuxt-link-locale>
 
-      <button
-        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-medium text-app-text-secondary hover:bg-app-surface-subtle transition-colors"
+      <nuxt-link-locale to="/settings" :class="[
+        'w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-medium transition-colors',
+        'text-app-text-secondary hover:bg-app-surface-subtle hover:text-app-text-primary',
+      ]" active-class="bg-app-primary-soft !text-app-primary font-semibold"
         :title="isCollapsed ? 'Settings' : undefined">
         <Icon name="lucide:sliders-horizontal" class="w-5 h-5 shrink-0" />
         <span v-if="!isCollapsed">Settings</span>
-      </button>
+      </nuxt-link-locale>
     </nav>
 
-    <!-- Bottom Logout Action -->
+    <!-- Bottom Logout Action (stays as button — it's an action, not a route) -->
     <div class="pt-4 border-t border-app-border">
       <button type="button"
         class="w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-medium text-app-text-secondary hover:text-danger hover:bg-danger/10 transition-colors btn-press focus-ring"
