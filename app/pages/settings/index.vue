@@ -1,6 +1,6 @@
 <template>
   <div class="w-full max-w-[860px] mx-auto p-4 md:p-0 space-y-6">
-    <v-preview-bar v-model="state" :options="states" label="Preview state:" hint="Interactive QA" />
+    <LazyVPreviewBar v-model="state" :options="states" label="Preview state:" hint="Interactive QA" />
 
     <!-- Header -->
     <header class="flex items-start justify-between gap-3">
@@ -68,7 +68,7 @@
 
     <delete-modal :open="state === 'delete-modal'" @cancel="state = 'standard'" @confirm="onPurge" />
 
-    <v-toast :visible="toastVisible">{{ toastText }}</v-toast>
+    <LazyVToast :visible="toastVisible">{{ toastText }}</LazyVToast>
   </div>
 </template>
 

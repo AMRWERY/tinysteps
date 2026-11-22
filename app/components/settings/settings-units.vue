@@ -17,7 +17,7 @@
           </div>
           <p class="hidden sm:block text-xs text-app-text-secondary mt-0.5">Timestamps across log history</p>
         </div>
-        <v-segmented v-model="settings.timeFormat" label="Time format" :options="timeOptions" class="max-sm:w-full" block />
+        <LazyVSegmented v-model="settings.timeFormat" label="Time format" :options="timeOptions" class="max-sm:w-full" block />
       </div>
 
       <!-- Liquid units -->
@@ -29,7 +29,7 @@
           </div>
           <p class="hidden sm:block text-xs text-app-text-secondary mt-0.5">Bottle feeds and pumped volume</p>
         </div>
-        <v-segmented v-model="settings.liquidUnit" label="Liquid units" :options="liquidOptions" class="max-sm:w-full" block />
+        <LazyVSegmented v-model="settings.liquidUnit" label="Liquid units" :options="liquidOptions" class="max-sm:w-full" block />
       </div>
 
       <!-- Weight (sm+) -->
@@ -38,7 +38,7 @@
           <p class="text-sm font-bold text-app-text-primary">Weight Format</p>
           <p class="text-xs text-app-text-secondary mt-0.5">Pediatric growth charts</p>
         </div>
-        <v-segmented v-model="settings.weightUnit" label="Weight format" :options="weightOptions" />
+        <LazyVSegmented v-model="settings.weightUnit" label="Weight format" :options="weightOptions" />
       </div>
 
       <!-- Keep awake -->

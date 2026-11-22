@@ -2,14 +2,14 @@
   <div class="space-y-5">
     <div class="space-y-2">
       <p class="text-sm text-app-text-secondary">What did you find?</p>
-      <v-choice v-model="form.kind" variant="segmented" label="Diaper type" :options="kinds" />
+      <LazyVChoice v-model="form.kind" variant="segmented" label="Diaper type" :options="kinds" />
     </div>
 
     <logger-time-field v-model="form.time" label="Time of Change" :error="errors.time" />
 
     <div class="space-y-2">
       <p class="text-sm text-app-text-secondary">Skin &amp; observations</p>
-      <v-choice v-model="form.observation" label="Observation" :options="observations" />
+      <LazyVChoice v-model="form.observation" label="Observation" :options="observations" />
     </div>
 
     <logger-notes-field v-model="form.notes" label="Add wellness notes (optional)"

@@ -19,98 +19,68 @@
           class="dlg-panel relative w-full md:max-w-[680px] max-h-[92dvh] md:max-h-[90dvh] flex flex-col bg-app-surface border border-app-border shadow-lg rounded-t-3xl md:rounded-card"
           @keydown="onKeydown"
         >
+          <!-- Grabber (phones) -->
+          <div class="md:hidden flex justify-center pt-3" aria-hidden="true">
+            <span class="w-12 h-1.5 rounded-full bg-app-border" />
+          </div>
+
           <!-- Header -->
-          <header class="flex items-start gap-4 p-5 md:p-6 pb-2 md:pb-3">
-            <span
-              :class="[
-                'w-12 h-12 rounded-2xl flex items-center justify-center shrink-0',
-                tile,
-              ]"
-            >
+          <header class="flex items-start gap-4 p-5 md:p-8 pb-2 md:pb-4">
+            <span :class="['hidden md:flex w-14 h-14 rounded-2xl items-center justify-center shrink-0', tile]">
               <Icon :name="icon" class="w-6 h-6" />
+            </span>
+            <span :class="['md:hidden flex w-12 h-12 rounded-2xl items-center justify-center shrink-0', mobileTile || tile]">
+              <Icon :name="mobileIcon || icon" class="w-6 h-6" />
             </span>
             <div class="min-w-0 flex-1">
               <div class="flex items-center gap-2 flex-wrap">
-                <h2
-                  :id="titleId"
-                  class="text-xl font-bold text-app-text-primary leading-tight"
-                >
+                <h2 :id="titleId" class="text-xl md:text-2xl font-bold text-app-text-primary leading-tight">
                   {{ title }}
                 </h2>
-                <span
-                  v-if="badge"
-                  class="px-2 py-0.5 rounded-md bg-app-primary-soft text-app-primary text-[10px] font-bold tracking-wider uppercase"
-                  >{{ badge }}</span
-                >
+                <span v-if="badge"
+                  class="px-2.5 py-0.5 rounded-full bg-app-primary-soft text-app-primary text-xs font-semibold">
+                  <span class="hidden md:inline">{{ badge }}</span><span class="md:hidden">{{ badgeShort || badge }}</span>
+                </span>
               </div>
-              <p :id="descId" class="text-sm text-app-text-secondary mt-1">
-                {{ subtitle }}
+              <p :id="descId" class="text-sm md:text-base text-app-text-secondary mt-1">
+                <span class="hidden md:inline">{{ subtitle }}</span><span class="md:hidden">{{ subtitleShort || subtitle }}</span>
               </p>
             </div>
-            <button
-              type="button"
-              aria-label="Close"
-              class="p-2 -me-2 -mt-1 rounded-lg text-app-text-secondary hover:text-app-text-primary hover:bg-app-surface-subtle transition-colors focus-ring"
-              @click="requestClose"
-            >
+            <button type="button" aria-label="Close"
+              class="w-10 h-10 rounded-full md:rounded-lg flex items-center justify-center bg-app-surface-subtle md:bg-transparent text-app-text-secondary hover:text-app-text-primary md:hover:bg-app-surface-subtle transition-colors focus-ring shrink-0"
+              @click="requestClose">
               <Icon name="lucide:x" class="w-5 h-5" />
             </button>
           </header>
 
           <!-- Body -->
-          <div class="flex-1 overflow-y-auto px-5 md:px-6 py-4">
+          <div class="flex-1 overflow-y-auto px-5 md:px-8 py-3">
             <slot />
           </div>
 
           <!-- Footer -->
-          <footer
-            class="p-5 md:p-6 pt-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3"
-          >
-            <p
-              class="hidden md:flex items-center gap-1.5 text-xs text-app-text-secondary"
-            >
-              <kbd
-                class="px-1.5 py-0.5 rounded bg-app-surface-subtle font-mono text-[10px]"
-                >Esc</kbd
-              >
-              cancel
-              <span aria-hidden="true">·</span>
-              <kbd
-                class="px-1.5 py-0.5 rounded bg-app-surface-subtle font-mono text-[10px]"
-                >{{ isMac ? "⌘" : "Ctrl" }}</kbd
-              >
-              <kbd
-                class="px-1.5 py-0.5 rounded bg-app-surface-subtle font-mono text-[10px]"
-                >↵</kbd
-              >
-              save
-            </p>
-            <div
-              class="flex flex-col md:flex-row md:items-center gap-2 md:gap-3"
-            >
-              <button
-                type="button"
-                :disabled="saving"
-                class="order-1 md:order-2 flex items-center justify-center gap-2 px-6 py-3 min-h-[48px] md:min-h-[44px] rounded-button bg-app-primary text-white text-sm font-semibold hover:bg-app-primary-hover active:scale-[0.98] transition-all shadow-xs disabled:opacity-70 disabled:cursor-wait focus-ring"
-                @click="emit('save')"
-              >
-                <span
-                  v-if="saving"
-                  class="w-4 h-4 rounded-full border-2 border-white/40 border-t-white animate-spin"
-                />
-                <Icon v-else name="lucide:check-circle-2" class="w-4 h-4" />
-                {{ saving ? "Saving…" : saveLabel }}
+          <footer class="p-5 md:p-8 pt-3 md:pt-4 space-y-3">
+            <div class="flex flex-col md:flex-row md:items-stretch gap-2 md:gap-3">
+              <button type="button" :disabled="saving"
+                class="order-2 md:order-1 px-6 py-3 md:py-3.5 text-sm md:text-base font-medium md:font-semibold text-app-text-secondary md:text-app-text-primary md:bg-app-surface-subtle md:hover:bg-app-border/40 hover:text-app-text-primary transition-colors focus-ring rounded-button md:rounded-2xl"
+                @click="requestClose">
+                Cancel
               </button>
-              <button
-                type="button"
-                :disabled="saving"
-                class="order-2 md:order-1 px-4 py-3 md:py-2.5 text-sm font-medium text-app-text-secondary hover:text-app-text-primary transition-colors focus-ring rounded-button"
-                @click="requestClose"
-              >
-                <span class="hidden md:inline">Discard</span
-                ><span class="md:hidden">Cancel &amp; Close</span>
+              <button type="button" :disabled="saving"
+                class="order-1 md:order-2 md:flex-1 flex items-center justify-center gap-2 px-6 py-3.5 min-h-[52px] rounded-2xl bg-app-primary text-white text-sm md:text-base font-semibold hover:bg-app-primary-hover active:scale-[0.98] transition-all shadow-xs disabled:opacity-70 disabled:cursor-wait focus-ring"
+                @click="emit('save')">
+                <span v-if="saving" class="w-4 h-4 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+                <Icon v-else name="lucide:check" class="w-4 h-4" />
+                {{ saving ? 'Saving…' : saveLabel }}
               </button>
             </div>
+            <p class="hidden md:flex items-center justify-between text-xs text-app-text-secondary">
+              <span><kbd class="px-1.5 py-0.5 rounded bg-app-surface-subtle font-mono text-[10px]">Esc</kbd> to cancel</span>
+              <span>
+                <kbd class="px-1.5 py-0.5 rounded bg-app-surface-subtle font-mono text-[10px]">{{ isMac ? '⌘' : 'Ctrl' }}</kbd>
+                + <kbd class="px-1.5 py-0.5 rounded bg-app-surface-subtle font-mono text-[10px]">Enter</kbd> to save {{ hintNoun }}
+              </span>
+            </p>
           </footer>
         </div>
       </div>
@@ -182,12 +152,19 @@ const props = withDefaults(
     icon: string;
     tile: string;
     badge?: string;
+    /** Phone-sized variants (the sheet is more compact than the desktop dialog). */
+    badgeShort?: string;
+    subtitleShort?: string;
+    mobileIcon?: string;
+    mobileTile?: string;
     /** True when the form has unsaved changes — closing then asks for confirmation. */
     dirty?: boolean;
     saving?: boolean;
     saveLabel?: string;
+    /** Used in the keyboard hint: "⌘ + Enter to save {hintNoun}" */
+    hintNoun?: string;
   }>(),
-  { saveLabel: "Save Routine" },
+  { saveLabel: "Save Routine", hintNoun: "routine" },
 );
 
 const emit = defineEmits<{ (e: "close"): void; (e: "save"): void }>();

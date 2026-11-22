@@ -12,7 +12,7 @@
 
     <fieldset class="space-y-2">
       <legend class="text-sm font-bold text-app-text-primary mb-2">Liquid units</legend>
-      <v-segmented v-model="settings.liquidUnit" label="Liquid units" block class="w-full"
+      <LazyVSegmented v-model="settings.liquidUnit" label="Liquid units" block class="w-full"
         :options="[{ value: 'ml', label: 'Milliliters (ml)' }, { value: 'oz', label: 'Fluid ounces (oz)' }]" />
     </fieldset>
 

@@ -2,7 +2,7 @@
   <div class="space-y-5">
     <div class="space-y-2">
       <p class="text-sm text-app-text-secondary">Sleep Type</p>
-      <v-choice v-model="form.kind" variant="segmented" label="Sleep type" :options="kinds" />
+      <LazyVChoice v-model="form.kind" variant="segmented" label="Sleep type" :options="kinds" />
     </div>
 
     <div class="grid sm:grid-cols-2 gap-4">
@@ -15,7 +15,7 @@
 
     <div class="space-y-2">
       <p class="text-sm text-app-text-secondary">Where did {{ baby.name }} sleep?</p>
-      <v-choice v-model="form.location" label="Sleep location" :options="locations" />
+      <LazyVChoice v-model="form.location" label="Sleep location" :options="locations" />
     </div>
 
     <logger-notes-field v-model="form.notes" label="Add sleep notes (optional)"

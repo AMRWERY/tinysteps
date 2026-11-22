@@ -1,12 +1,16 @@
 <template>
-  <v-dialog :open="open" :title="meta.title" :subtitle="meta.subtitle" :icon="meta.icon" :tile="meta.tile"
-    badge="Active" :dirty="dirty" :saving="saving" @close="close" @save="save">
+  <LazyVDialog :open="open" :title="meta.title" :subtitle="meta.subtitle" :subtitle-short="meta.subtitleShort"
+    :icon="meta.icon" :tile="meta.tile" :mobile-icon="meta.mobileIcon" :mobile-tile="meta.mobileTile"
+    :badge="`${baby.name} · ${baby.week}w`" :badge-short="baby.name" :save-label="meta.saveLabel"
+    :hint-noun="meta.hintNoun" :dirty="dirty" :saving="saving" @close="close" @save="save">
     <logger-feed-form v-if="type === 'feed'" :form="feed" :errors="errors" />
+   
     <logger-sleep-form v-else-if="type === 'sleep'" :form="sleep" :errors="errors" />
+   
     <logger-diaper-form v-else :form="diaper" :errors="errors" />
-  </v-dialog>
+  </LazyVDialog>
 
-  <v-toast :visible="toastVisible">{{ toastText }}</v-toast>
+  <LazyVToast :visible="toastVisible">{{ toastText }}</LazyVToast>
 </template>
 
 <script setup lang="ts">
@@ -32,6 +36,9 @@ const diaper = reactive<DiaperForm>(freshDiaper())
 const errors = reactive<LogErrors>({})
 const saving = ref(false)
 
+// The amount is optional: empty (null or '') means "not recorded"
+const hasQuantity = computed(() => feed.quantity !== null && (feed.quantity as unknown) !== '')
+
 const currentForm = computed(() => (type.value === 'feed' ? feed : type.value === 'sleep' ? sleep : diaper))
 let snapshot = ''
 
@@ -48,9 +55,25 @@ watch(open, (isOpen) => {
 const dirty = computed(() => open.value && JSON.stringify(currentForm.value) !== snapshot)
 
 const meta = computed(() => ({
-  feed: { title: 'Log Feeding Routine', subtitle: 'Record nourishment at your own pace without pressure.', icon: 'lucide:milk', tile: routineTypeMeta.feed.tile },
-  sleep: { title: 'Log Sleep Routine', subtitle: `Capture ${baby.name}'s naps and night sleeps, no math needed.`, icon: 'lucide:moon', tile: routineTypeMeta.sleep.tile },
-  diaper: { title: 'Log Diaper Change', subtitle: 'A quick, calm record of changes and skin health.', icon: 'lucide:droplet', tile: 'bg-app-accent-soft text-app-accent' },
+  feed: {
+    title: 'Log Feeding', saveLabel: 'Save Feeding', hintNoun: 'feeding',
+    subtitle: 'Record feeding rhythms at your own pace without pressure. Every drop counts.',
+    subtitleShort: 'Record nourishment with one hand',
+    icon: 'lucide:smile', tile: 'bg-app-accent-soft text-app-accent',
+    mobileIcon: 'lucide:milk', mobileTile: 'bg-app-primary-soft text-app-primary',
+  },
+  sleep: {
+    title: 'Log Sleep', saveLabel: 'Save Sleep', hintNoun: 'sleep',
+    subtitle: `Capture ${baby.name}'s naps and night sleeps, no math needed.`,
+    subtitleShort: 'Record naps and night sleeps',
+    icon: 'lucide:moon', tile: routineTypeMeta.sleep.tile, mobileIcon: undefined, mobileTile: undefined,
+  },
+  diaper: {
+    title: 'Log Diaper', saveLabel: 'Save Diaper', hintNoun: 'diaper change',
+    subtitle: 'A quick, calm record of changes and skin health.',
+    subtitleShort: 'Record a change in seconds',
+    icon: 'lucide:droplet', tile: 'bg-app-accent-soft text-app-accent', mobileIcon: undefined, mobileTile: undefined,
+  },
 }[type.value]))
 
 // ── Validation ──────────────────────────────────────────────────────
@@ -59,7 +82,11 @@ const validate = () => {
 
   if (type.value === 'feed') {
     if (!feed.time) errors.time = 'Please choose the time of the feed.'
-    if (feed.method === 'bottle' && !(feed.quantity && feed.quantity > 0)) errors.quantity = 'Enter how much was consumed.'
+    if (feed.method === 'bottle' && hasQuantity.value) {
+      const max = settings.value.liquidUnit === 'ml' ? 500 : 17
+      const q = Number(feed.quantity)
+      if (!(q > 0 && q <= max)) errors.quantity = `Enter an amount between 1 and ${max} ${settings.value.liquidUnit}, or leave it blank.`
+    }
     if (feed.method === 'nursing' && !((feed.leftMin || 0) + (feed.rightMin || 0) > 0)) errors.duration = 'Enter minutes for at least one side.'
   } else if (type.value === 'sleep') {
     if (!sleep.start) errors.start = 'Please choose when sleep started.'
@@ -86,10 +113,10 @@ const buildEntry = (): TimelineEntry => {
       }
     }
     const names = { expressed: 'Expressed Milk', formula: 'Formula', combo: 'Fortified Combo' }
-    const qty = `${feed.quantity} ${settings.value.liquidUnit}`
+    const qty = hasQuantity.value ? `${feed.quantity} ${settings.value.liquidUnit}` : ''
     return {
-      ...base, type: 'feed', title: `${names[feed.liquid]} Bottle`, badge: qty, badgeColor: 'subtle',
-      clock: fmt(feed.time), metric: { value: qty, label: 'Bottle' },
+      ...base, type: 'feed', title: `${names[feed.liquid]} Bottle`, badge: qty || 'Bottle', badgeColor: 'subtle',
+      clock: fmt(feed.time), metric: qty ? { value: qty, label: 'Bottle' } : undefined,
       description: feed.notes.trim() || 'Logged just now',
     }
   }
