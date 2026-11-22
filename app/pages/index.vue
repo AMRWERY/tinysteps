@@ -51,10 +51,9 @@ const sleepSubtitle = computed(() =>
   currentState.value === 'active-sleep' ? `Active now (${elapsedMinutes.value} mins)` : 'Last: 1h 20m ago',
 )
 
-const handleQuickLog = (type: string) => {
-  // TODO: open the log sheet / persist the event
-  console.log('Quick log action triggered:', type)
-}
+const { openLogger } = useRoutineLogger()
+
+const handleQuickLog = (type: 'feed' | 'sleep' | 'diaper') => openLogger(type)
 
 useSeoMeta({
   title: 'Home — TinySteps',
