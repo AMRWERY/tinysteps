@@ -4,8 +4,13 @@
     <!-- Desktop Layout Shell (hidden on mobile, matches Screenshot 1) -->
     <div class="hidden md:flex min-h-screen">
       <!-- Sidebar Component (from components/layouts/sidebar.vue) -->
-      <Sidebar :is-collapsed="isCollapsed" :current-theme="currentTheme" @set-theme="setTheme"
-        @update:is-collapsed="isCollapsed = $event" @logout="handleLogout" />
+      <Sidebar :is-collapsed="isCollapsed" :is-mobile-open="isDrawerOpen" :current-theme="currentTheme"
+        @set-theme="setTheme" @update:is-collapsed="isCollapsed = $event" @logout="handleLogout" />
+
+      <!-- Backdrop for the drawer on medium screens -->
+      <Transition name="fade">
+        <div v-if="isDrawerOpen" class="fixed inset-0 z-30 bg-black/40 lg:hidden" @click="isDrawerOpen = false" />
+      </Transition>
 
       <!-- Main Desktop Area -->
       <div class="flex-1 min-w-0 flex flex-col min-h-screen">
@@ -13,13 +18,20 @@
         <header
           class="sticky top-0 z-20 bg-app-bg/95 backdrop-blur-sm border-b border-app-border px-6 py-3.5 flex items-center justify-between">
           <div class="flex items-center gap-3">
+            <!-- Medium screens: open/close the drawer -->
             <button type="button"
-              class="p-2 -ml-2 rounded-lg text-app-text-secondary hover:text-app-text-primary hover:bg-app-surface-subtle transition-colors"
+              class="lg:hidden p-2 -ms-2 rounded-lg text-app-text-secondary hover:text-app-text-primary hover:bg-app-surface-subtle transition-colors"
+              title="Open Sidebar" :aria-expanded="isDrawerOpen" @click="isDrawerOpen = !isDrawerOpen">
+              <Icon name="lucide:panel-left" class="w-5 h-5" />
+            </button>
+            <!-- Large screens: collapse/expand the sidebar -->
+            <button type="button"
+              class="hidden lg:inline-flex p-2 -ms-2 rounded-lg text-app-text-secondary hover:text-app-text-primary hover:bg-app-surface-subtle transition-colors"
               title="Toggle Sidebar" @click="isCollapsed = !isCollapsed">
               <Icon name="lucide:panel-left" class="w-5 h-5" />
             </button>
             <span class="text-sm font-semibold text-app-text-secondary">
-              Today, 14 Oct • Week 14
+              Today, {{ todayLabel }} • Week {{ babyWeek }}
             </span>
           </div>
 
@@ -64,7 +76,19 @@
 const { locale, locales } = useI18n()
 const { currentTheme, setTheme } = useAppTheme()
 
+// Today's date, formatted for the active locale (e.g. "22 Nov")
+const today = new Date()
+const todayLabel = computed(() =>
+  today.toLocaleDateString(locale.value, { day: 'numeric', month: 'short' }),
+)
+
+// TODO: derive from the baby's birth date once the profile data is available
+const babyWeek = ref(14)
+
 const isCollapsed = ref(false)
+const isDrawerOpen = ref(false)
+const route = useRoute()
+watch(() => route.fullPath, () => { isDrawerOpen.value = false })
 const mobileState = ref<'active-sleep' | 'baby-awake' | 'first-run' | 'loading'>('active-sleep')
 
 // Simple elapsed timer for the mobile state preview
@@ -98,3 +122,15 @@ useHead({
   },
 })
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

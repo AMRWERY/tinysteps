@@ -1,7 +1,11 @@
 <template>
   <aside :class="[
-    'hidden md:flex flex-col border-r border-app-border bg-app-surface transition-all duration-200 select-none shrink-0 h-screen sticky top-0 z-30',
-    isCollapsed ? 'w-[78px] px-2' : 'w-[260px] p-4'
+    'hidden md:flex flex-col border-e border-app-border bg-app-surface transition-all duration-200 select-none shrink-0 h-screen z-40',
+    // md: off-canvas drawer opened via button; lg+: in-flow sticky sidebar
+    'fixed top-0 start-0 lg:sticky',
+    isSwitchingLocale ? '!transition-none' : '',
+    isMobileOpen ? 'translate-x-0' : '-translate-x-full rtl:translate-x-full lg:translate-x-0 lg:rtl:translate-x-0',
+    isCollapsed ? 'w-[260px] p-4 lg:w-[78px] lg:px-2' : 'w-[260px] p-4'
   ]">
     <!-- Brand Header -->
     <div class="flex items-center gap-3 py-3 px-2 mb-6">
@@ -70,8 +74,21 @@ import type { ThemeMode } from '~/types/home'
 
 defineProps<{
   isCollapsed: boolean
+  isMobileOpen?: boolean
   currentTheme?: ThemeMode
 }>()
+
+// Suppress transitions while the locale (and so text direction) changes,
+// otherwise the drawer visibly slides between its LTR/RTL closed positions.
+const { locale } = useI18n()
+const isSwitchingLocale = ref(false)
+let switchTimer: ReturnType<typeof setTimeout> | undefined
+watch(locale, () => {
+  isSwitchingLocale.value = true
+  clearTimeout(switchTimer)
+  switchTimer = setTimeout(() => { isSwitchingLocale.value = false }, 300)
+}, { flush: 'sync' })
+onBeforeUnmount(() => clearTimeout(switchTimer))
 
 const emit = defineEmits<{
   (e: 'update:isCollapsed', value: boolean): void
