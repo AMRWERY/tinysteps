@@ -30,3 +30,17 @@ export const formatDuration = (minutes: number) => {
   const m = minutes % 60
   return h ? (m ? `${h}h ${m}m` : `${h}h`) : `${m}m`
 }
+
+/** Epoch ms -> "hh:mm" (local, 24h). */
+export const msToHHmm = (ms: number) => {
+  const d = new Date(ms)
+  return `${pad(d.getHours())}:${pad(d.getMinutes())}`
+}
+
+/** The moment on the same local day as `baseMs` at the given "hh:mm". */
+export const withTime = (baseMs: number, hhmm: string) => {
+  const [h = 0, m = 0] = hhmm.split(':').map(Number)
+  const d = new Date(baseMs)
+  d.setHours(h, m, 0, 0)
+  return d.getTime()
+}

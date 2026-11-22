@@ -2,7 +2,7 @@
   <LazyVDialog :open="open" :title="meta.title" :subtitle="meta.subtitle" :subtitle-short="meta.subtitleShort"
     :icon="meta.icon" :tile="meta.tile" :mobile-icon="meta.mobileIcon" :mobile-tile="meta.mobileTile"
     :badge="`${baby.name} · ${baby.week}w`" :badge-short="baby.name" :save-label="meta.saveLabel"
-    :hint-noun="meta.hintNoun" :dirty="dirty" :saving="saving" @close="close" @save="save">
+    :dirty="dirty" :saving="saving" @close="close" @discard="close" @save="save">
     <logger-feed-form v-if="type === 'feed'" :form="feed" :errors="errors" />
    
     <logger-sleep-form v-else-if="type === 'sleep'" :form="sleep" :errors="errors" />

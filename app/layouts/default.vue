@@ -91,6 +91,7 @@
 
     <!-- Routine logger dialog (opened via useRoutineLogger) -->
     <logger-host />
+    <sleep-flow-host />
   </div>
 </template>
 

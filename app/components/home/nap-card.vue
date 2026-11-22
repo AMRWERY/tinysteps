@@ -76,7 +76,7 @@
         <p class="text-xs text-app-text-secondary">Nap duration so far</p>
         <p class="mt-1 flex items-baseline gap-2">
           <span class="text-4xl font-bold font-mono tabular-nums text-app-text-primary">{{ timerString }}</span>
-          <span class="text-xs text-app-text-secondary">started at 1:15 PM</span>
+          <span class="text-xs text-app-text-secondary">started at {{ startedLabel }}</span>
         </p>
       </div>
       <div class="text-end">
@@ -121,6 +121,9 @@ defineProps<{ state: AppState; timerString: string; isPaused: boolean }>()
 const emit = defineEmits<{ (e: 'togglePause'): void; (e: 'wakeAndSave'): void; (e: 'startNap'): void }>()
 
 const { baby } = useBabyProfile()
+const { startedAt } = useSleepSession()
+const settings = useAppSettings()
+const startedLabel = computed(() => formatClock(msToHHmm(startedAt.value), settings.value.timeFormat))
 const bars = [10, 22, 34, 16, 18, 30, 10, 40, 12, 8, 28, 36, 14, 12, 30, 10, 22, 34, 12, 18, 26, 14, 32, 10]
 </script>
 
