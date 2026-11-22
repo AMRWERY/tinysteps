@@ -80,7 +80,8 @@
         </header>
 
         <!-- Page content: pages own their padding on phones -->
-        <main class="flex-1 pb-24 md:pb-6 md:p-6 flex gap-6 items-start justify-center">
+        <!-- `min-w-0` on children stops wide content (e.g. scrolling pill rows) from stretching the page -->
+        <main class="flex-1 min-w-0 pb-24 md:pb-6 md:p-6 flex gap-6 items-start justify-center [&>*]:min-w-0">
           <slot :is-collapsed="isCollapsed" />
         </main>
       </div>
