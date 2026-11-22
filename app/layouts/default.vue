@@ -88,6 +88,9 @@
     </div>
 
     <mobile-bottom-nav />
+
+    <!-- Routine logger dialog (opened via useRoutineLogger) -->
+    <logger-host />
   </div>
 </template>
 
