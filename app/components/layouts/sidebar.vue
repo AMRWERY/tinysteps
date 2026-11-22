@@ -87,8 +87,8 @@
             'absolute rounded-lg bg-app-surface shadow-sm transition-all duration-300 ease-out',
             isMounted ? 'opacity-100' : 'opacity-0',
             isCollapsed
-              ? ['inset-x-0 top-0 h-1/2', currentTheme === 'dark' ? 'translate-y-full' : '']
-              : ['inset-y-0 start-0 w-1/2', currentTheme === 'dark' ? 'translate-x-full rtl:-translate-x-full' : ''],
+              ? ['inset-x-0 top-0 h-1/2', isThemeActive('dark') ? 'translate-y-full' : '']
+              : ['inset-y-0 start-0 w-1/2', isThemeActive('dark') ? 'translate-x-full rtl:-translate-x-full' : ''],
           ]" />
           <button v-for="mode in themeModes" :key="mode.value" type="button" :title="mode.label"
             :aria-label="mode.label" :aria-pressed="isThemeActive(mode.value)" :class="[
