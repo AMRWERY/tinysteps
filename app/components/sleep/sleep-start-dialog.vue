@@ -80,7 +80,7 @@ const begin = () => {
 
   const entry: TimelineEntry = {
     id: `sleep-${Date.now()}`, type: 'sleep', title: 'Nap (In Progress)', badge: 'Active', badgeColor: 'primary',
-    isActive: true, clock: `Started ${formatClock(msToHHmm(startMs), settings.value.timeFormat)}`,
+    isActive: true, at: startMs, clock: `Started ${formatClock(msToHHmm(startMs), settings.value.timeFormat)}`,
     description: 'Quiet routine in progress', loggedBy: caregiver.name,
   }
   timelineEntries.value = [entry, ...timelineEntries.value.filter(e => !e.isActive)]

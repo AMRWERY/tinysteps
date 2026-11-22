@@ -29,7 +29,7 @@
             <span :class="['hidden md:flex w-14 h-14 rounded-2xl items-center justify-center shrink-0', tile]">
               <Icon :name="icon" class="w-6 h-6" />
             </span>
-            <span :class="['md:hidden flex w-12 h-12 rounded-2xl items-center justify-center shrink-0', mobileTile || tile]">
+            <span v-if="!hideMobileIcon" :class="['md:hidden flex w-12 h-12 rounded-2xl items-center justify-center shrink-0', mobileTile || tile]">
               <Icon :name="mobileIcon || icon" class="w-6 h-6" />
             </span>
             <div class="min-w-0 flex-1">
@@ -152,6 +152,8 @@ const props = withDefaults(
     subtitleShort?: string;
     mobileIcon?: string;
     mobileTile?: string;
+    /** Phones show no icon tile (some designs omit it). */
+    hideMobileIcon?: boolean;
     /** True when the form has unsaved changes — closing then asks for confirmation. */
     dirty?: boolean;
     saving?: boolean;

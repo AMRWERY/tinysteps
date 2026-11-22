@@ -96,7 +96,7 @@
 </template>
 
 <script lang="ts" setup>
-const { locale, locales } = useI18n()
+const { locale } = useI18n()
 const { currentTheme, setTheme } = useAppTheme()
 const { baby } = useBabyProfile()
 
@@ -111,24 +111,9 @@ const isDrawerOpen = ref(false)
 const route = useRoute()
 watch(() => route.fullPath, () => { isDrawerOpen.value = false })
 
-const handleLogout = () => {
-  console.log('Logging out...')
-}
+const handleLogout = useSignOut()
 
-const currentLocale = computed(() => {
-  return (locales.value as Array<{ code: string; dir?: string }>).find(l => l.code === locale.value)
-})
-
-const dir = computed(() => {
-  return currentLocale.value?.dir || (locale.value === 'ar' ? 'rtl' : 'ltr')
-})
-
-useHead({
-  htmlAttrs: {
-    lang: computed(() => locale.value),
-    dir: dir,
-  },
-})
+useHtmlLocale()
 </script>
 
 <style scoped>

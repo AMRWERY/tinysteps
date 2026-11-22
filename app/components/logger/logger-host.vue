@@ -1,13 +1,37 @@
 <template>
   <LazyVDialog :open="open" :title="meta.title" :subtitle="meta.subtitle" :subtitle-short="meta.subtitleShort"
     :icon="meta.icon" :tile="meta.tile" :mobile-icon="meta.mobileIcon" :mobile-tile="meta.mobileTile"
-    :badge="`${baby.name} · ${baby.week}w`" :badge-short="baby.name" :save-label="meta.saveLabel"
+    :hide-mobile-icon="meta.hideMobileIcon" :badge="meta.badge" :badge-short="meta.badgeShort" :save-label="meta.saveLabel"
     :dirty="dirty" :saving="saving" @close="close" @discard="close" @save="save">
     <logger-feed-form v-if="type === 'feed'" :form="feed" :errors="errors" />
    
     <logger-sleep-form v-else-if="type === 'sleep'" :form="sleep" :errors="errors" />
    
     <logger-diaper-form v-else :form="diaper" :errors="errors" />
+
+    <!-- Diaper uses a compact footer: shortcuts on the left, Discard + Save on the right -->
+    <template v-if="type === 'diaper'" #footer="{ requestClose, save: submit }">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4">
+        <p class="hidden md:flex items-center gap-2 text-xs text-app-text-secondary">
+          <kbd class="px-2 py-1 rounded-md bg-app-surface-subtle font-mono">Esc discard</kbd>
+          <kbd class="px-2 py-1 rounded-md bg-app-surface-subtle font-mono">⌘+Enter save</kbd>
+        </p>
+        <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-3">
+          <button type="button" :disabled="saving"
+            class="order-2 md:order-1 px-5 py-3 text-base text-app-text-secondary hover:text-app-text-primary transition-colors focus-ring rounded-xl"
+            @click="requestClose()">
+            <span class="hidden md:inline">Discard</span><span class="md:hidden">Cancel</span>
+          </button>
+          <button type="button" :disabled="saving"
+            class="order-1 md:order-2 flex items-center justify-center gap-2 px-7 py-3.5 min-h-[52px] rounded-2xl bg-app-primary text-white text-base font-semibold hover:bg-app-primary-hover active:scale-[0.98] transition-all shadow-xs disabled:opacity-70 disabled:cursor-wait focus-ring"
+            @click="submit()">
+            <span v-if="saving" class="w-4 h-4 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+            <Icon v-else name="lucide:check" class="w-4 h-4" />
+            <span class="hidden md:inline">Save Diaper Entry</span><span class="md:hidden">Save Diaper Change</span>
+          </button>
+        </div>
+      </div>
+    </template>
   </LazyVDialog>
 
   <LazyVToast :visible="toastVisible">{{ toastText }}</LazyVToast>
@@ -28,7 +52,7 @@ const freshFeed = (): FeedForm => ({
   liquid: 'expressed', leftMin: null, rightMin: null, notes: '',
 })
 const freshSleep = (): SleepForm => ({ kind: 'nap', start: nowHHmm(), end: '', location: 'crib', notes: '' })
-const freshDiaper = (): DiaperForm => ({ kind: 'wet', time: nowHHmm(), observation: 'normal', notes: '' })
+const freshDiaper = (): DiaperForm => ({ kind: 'wet', time: nowHHmm(), details: ['normal'], notes: '' })
 
 const feed = reactive<FeedForm>(freshFeed())
 const sleep = reactive<SleepForm>(freshSleep())
@@ -57,6 +81,7 @@ const dirty = computed(() => open.value && JSON.stringify(currentForm.value) !==
 const meta = computed(() => ({
   feed: {
     title: 'Log Feeding', saveLabel: 'Save Feeding', hintNoun: 'feeding',
+    badge: `${baby.name} · ${baby.week}w`, badgeShort: baby.name, hideMobileIcon: false,
     subtitle: 'Record feeding rhythms at your own pace without pressure. Every drop counts.',
     subtitleShort: 'Record nourishment with one hand',
     icon: 'lucide:smile', tile: 'bg-app-accent-soft text-app-accent',
@@ -64,15 +89,17 @@ const meta = computed(() => ({
   },
   sleep: {
     title: 'Log Sleep', saveLabel: 'Save Sleep', hintNoun: 'sleep',
+    badge: `${baby.name} · ${baby.week}w`, badgeShort: baby.name, hideMobileIcon: false,
     subtitle: `Capture ${baby.name}'s naps and night sleeps, no math needed.`,
     subtitleShort: 'Record naps and night sleeps',
     icon: 'lucide:moon', tile: routineTypeMeta.sleep.tile, mobileIcon: undefined, mobileTile: undefined,
   },
   diaper: {
-    title: 'Log Diaper', saveLabel: 'Save Diaper', hintNoun: 'diaper change',
-    subtitle: 'A quick, calm record of changes and skin health.',
-    subtitleShort: 'Record a change in seconds',
-    icon: 'lucide:droplet', tile: 'bg-app-accent-soft text-app-accent', mobileIcon: undefined, mobileTile: undefined,
+    title: 'Log Diaper Change', saveLabel: 'Save Diaper Entry', hintNoun: 'diaper change',
+    badge: 'Quick Log', badgeShort: 'Routine Care', hideMobileIcon: true,
+    subtitle: 'Record daily routines with one click. Simple, private, and calm.',
+    subtitleShort: `Quick, quiet logging so you can get back to ${baby.name}.`,
+    icon: 'lucide:baby', tile: 'bg-app-primary-soft text-app-primary', mobileIcon: undefined, mobileTile: undefined,
   },
 }[type.value]))
 
@@ -93,6 +120,8 @@ const validate = () => {
     if (sleep.end && sleep.start && sleep.end === sleep.start) errors.end = 'Wake-up time must differ from the start time.'
   } else if (!diaper.time) {
     errors.time = 'Please choose the time of the change.'
+  } else if (withTime(Date.now(), diaper.time) > Date.now() + 60_000) {
+    errors.time = "Time can't be in the future."
   }
   return Object.keys(errors).length === 0
 }
@@ -100,7 +129,8 @@ const validate = () => {
 // ── Save → timeline entry ───────────────────────────────────────────
 const buildEntry = (): TimelineEntry => {
   const fmt = (t: string) => formatClock(t, settings.value.timeFormat)
-  const base = { id: `log-${Date.now()}`, loggedBy: caregiver.name }
+  const loggedAt = withTime(Date.now(), type.value === 'feed' ? feed.time : type.value === 'sleep' ? (sleep.end || sleep.start) : diaper.time)
+  const base = { id: `log-${Date.now()}`, loggedBy: caregiver.name, at: loggedAt }
 
   if (type.value === 'feed') {
     if (feed.method === 'nursing') {
@@ -139,10 +169,10 @@ const buildEntry = (): TimelineEntry => {
   }
 
   const kind = { wet: 'Wet', dirty: 'Dirty', both: 'Wet + Dirty' }[diaper.kind]
-  const obs = { normal: 'Normal', 'skin-clear': 'Skin clear', rash: 'Rash noted' }[diaper.observation]
+  const parts = [...diaper.details.map(d => diaperDetailLabels[d] ?? d), diaper.notes.trim()].filter(Boolean)
   return {
     ...base, type: 'diaper', title: 'Diaper Change', badge: kind, badgeColor: 'warning',
-    clock: fmt(diaper.time), description: diaper.notes.trim() || `${obs} • Logged just now`,
+    clock: fmt(diaper.time), description: parts.join(' • ') || 'Logged just now',
   }
 }
 

@@ -139,7 +139,7 @@ const save = () => {
   const startHour = Number(startTime.value.split(':')[0])
   const entry: TimelineEntry = {
     id: `sleep-${Date.now()}`, type: 'sleep', title: startHour >= 19 || startHour < 5 ? 'Night Sleep' : 'Nap',
-    badge: where, badgeColor: 'subtle', clock: `${fmt(startTime.value)} – ${fmt(wakeTime.value)}`,
+    badge: where, badgeColor: 'subtle', at: wakeMs.value, clock: `${fmt(startTime.value)} – ${fmt(wakeTime.value)}`,
     metric: { value: formatDuration(minutes.value), label: 'Rest' },
     description: notes.value.trim() || 'Logged just now', loggedBy: caregiver.name,
   }

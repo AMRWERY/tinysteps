@@ -23,7 +23,8 @@ export interface SleepForm {
 export interface DiaperForm {
   kind: 'wet' | 'dirty' | 'both'
   time: string
-  observation: 'normal' | 'skin-clear' | 'rash'
+  /** Selected care-detail chip ids (multi-select) */
+  details: string[]
   notes: string
 }
 
