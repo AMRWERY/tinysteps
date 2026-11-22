@@ -13,6 +13,7 @@
 <script setup lang="ts">
 const items = [
   { to: '/', label: 'Home', icon: 'lucide:layout-grid' },
+  { to: '/timeline', label: 'Timeline', icon: 'lucide:git-commit-vertical' },
   { to: '/history', label: 'History', icon: 'lucide:calendar' },
   { to: '/baby-profile', label: 'Baby', icon: 'lucide:smile' },
   { to: '/settings', label: 'Settings', icon: 'lucide:settings' },

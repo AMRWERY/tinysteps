@@ -8,17 +8,17 @@
       :entries="timelineEntries"
       :totals="totals"
       :sleep-subtitle="sleepSubtitle"
-      @update:state="currentState = $event"
-      @toggle-pause="isPaused = !isPaused"
-      @wake-and-save="wakeAndSave"
-      @start-nap="startNap"
+      @update:state="setHomeState"
+      @toggle-pause="togglePause"
+      @wake-and-save="openFinish"
+      @start-nap="openStart"
       @log="handleQuickLog"
     />
 
     <!-- Medium and large screens -->
     <div class="hidden md:flex flex-col xl:flex-row gap-6 items-start w-full max-w-[1240px] mx-auto">
       <div class="flex-1 min-w-0 w-full space-y-6">
-        <preview-states-toolbar v-model="currentState" />
+        <preview-states-toolbar :model-value="currentState" @update:model-value="setHomeState" />
 
         <home-header :state="currentState" @quick-log="handleQuickLog('feed')" />
 
@@ -26,9 +26,9 @@
           :state="currentState"
           :timer-string="formattedTimer"
           :is-paused="isPaused"
-          @toggle-pause="isPaused = !isPaused"
-          @wake-and-save="wakeAndSave"
-          @start-nap="startNap"
+          @toggle-pause="togglePause"
+          @wake-and-save="openFinish"
+          @start-nap="openStart"
         />
 
         <quick-routines :sleep-subtitle="sleepSubtitle" @log="handleQuickLog" />
@@ -44,8 +44,15 @@
 <script setup lang="ts">
 const {
   currentState, elapsedMinutes, isPaused, formattedTimer,
-  wakeAndSave, startNap, timelineEntries, totals,
+  togglePause, timelineEntries, totals,
 } = useRoutineState()
+const { openStart, openFinish, start } = useSleepSession()
+
+// The preview pills can jump straight to "active sleep" — begin a fresh session in that case
+const setHomeState = (next: typeof currentState.value) => {
+  if (next === 'active-sleep' && currentState.value !== 'active-sleep') start()
+  else currentState.value = next
+}
 
 const sleepSubtitle = computed(() =>
   currentState.value === 'active-sleep' ? `Active now (${elapsedMinutes.value} mins)` : 'Last: 1h 20m ago',
@@ -53,7 +60,11 @@ const sleepSubtitle = computed(() =>
 
 const { openLogger } = useRoutineLogger()
 
-const handleQuickLog = (type: 'feed' | 'sleep' | 'diaper') => openLogger(type)
+const handleQuickLog = (type: 'feed' | 'sleep' | 'diaper') => {
+  // Sleep is a flow: start a session, or review & finish the running one
+  if (type === 'sleep') return currentState.value === 'active-sleep' ? openFinish() : openStart()
+  openLogger(type)
+}
 
 useSeoMeta({
   title: 'Home — TinySteps',

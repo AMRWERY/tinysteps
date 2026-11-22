@@ -40,6 +40,8 @@ export interface TimelineEntry {
     description: string;
     loggedBy?: string;
     isActive?: boolean;
+    /** When it happened (epoch ms) — used for "x ago" labels. */
+    at?: number;
 }
 
 export interface DayTotals {

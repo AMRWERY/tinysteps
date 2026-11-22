@@ -60,7 +60,7 @@
       <div class="flex items-center justify-between gap-3">
         <div>
           <p class="text-3xl font-bold font-mono tabular-nums text-app-text-primary">{{ timerString }}</p>
-          <p class="text-xs text-app-text-secondary mt-1">Started at 1:15 PM • White noise playing</p>
+          <p class="text-xs text-app-text-secondary mt-1">Started at {{ startedLabel }} • White noise playing</p>
         </div>
         <button type="button" :aria-label="isPaused ? 'Resume' : 'Pause'"
           class="w-12 h-12 rounded-2xl bg-app-surface text-app-primary flex items-center justify-center shadow-xs shrink-0"
@@ -184,6 +184,9 @@ const emit = defineEmits<{
 }>()
 
 const { baby, caregiver } = useBabyProfile()
+const { startedAt } = useSleepSession()
+const settings = useAppSettings()
+const startedLabel = computed(() => formatClock(msToHHmm(startedAt.value), settings.value.timeFormat))
 const { greeting, dateLabelUpper } = useGreeting()
 
 const tabs: { value: AppState; label: string }[] = [

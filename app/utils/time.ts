@@ -30,3 +30,38 @@ export const formatDuration = (minutes: number) => {
   const m = minutes % 60
   return h ? (m ? `${h}h ${m}m` : `${h}h`) : `${m}m`
 }
+
+/** Epoch ms -> "hh:mm" (local, 24h). */
+export const msToHHmm = (ms: number) => {
+  const d = new Date(ms)
+  return `${pad(d.getHours())}:${pad(d.getMinutes())}`
+}
+
+/** The moment on the same local day as `baseMs` at the given "hh:mm". */
+export const withTime = (baseMs: number, hhmm: string) => {
+  const [h = 0, m = 0] = hhmm.split(':').map(Number)
+  const d = new Date(baseMs)
+  d.setHours(h, m, 0, 0)
+  return d.getTime()
+}
+
+/** "1h 25m" / "48m" / "1h" -> minutes (0 when it can't be read). */
+export const parseMinutes = (text?: string) => {
+  if (!text) return 0
+  const h = /(\d+)\s*h/.exec(text)
+  const m = /(\d+)\s*m(?!l)/.exec(text)
+  return (h ? Number(h[1]) * 60 : 0) + (m ? Number(m[1]) : 0)
+}
+
+/** "120 ml" -> 120 (0 when absent). */
+export const parseMl = (text?: string) => {
+  const m = /(\d+(?:\.\d+)?)\s*ml/i.exec(text ?? '')
+  return m ? Number(m[1]) : 0
+}
+
+/** Epoch ms -> "42m ago" / "1h 45m ago" / "Just now". */
+export const formatAgo = (ms: number, nowMs = Date.now()) => {
+  const minutes = Math.max(0, Math.floor((nowMs - ms) / 60_000))
+  if (minutes < 1) return 'Just now'
+  return `${formatDuration(minutes)} ago`
+}

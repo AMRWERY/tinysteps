@@ -54,6 +54,12 @@
       <settings-caregivers />
       <settings-privacy @export="onExport" @delete="state = 'delete-modal'" />
 
+      <button type="button"
+        class="w-full flex items-center justify-center gap-2 px-5 py-3.5 min-h-[48px] rounded-2xl border border-app-border bg-app-surface text-sm font-semibold text-app-text-primary hover:bg-app-surface-subtle transition-colors focus-ring"
+        @click="signOut">
+        <Icon name="lucide:log-out" class="w-4 h-4" /> Sign out
+      </button>
+
       <footer class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-app-border text-xs text-app-text-secondary">
         <p>
           <span class="hidden sm:inline">TinySteps Desktop v1.0.4 • Made with warmth for tired parents</span>
@@ -76,6 +82,7 @@
 type SettingsState = 'standard' | 'delete-modal' | 'export-toast' | 'skeleton'
 
 const { currentTheme, setTheme } = useAppTheme()
+const signOut = useSignOut()
 
 const state = ref<SettingsState>('standard')
 const states: { value: SettingsState; label: string }[] = [

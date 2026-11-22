@@ -19,41 +19,14 @@
     </div>
 
     <!-- Navigation links -->
-    <nav class="flex-1 space-y-1">
-      <nuxt-link-locale to="/" :class="[
-        'w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-medium transition-colors',
-        'text-app-text-secondary hover:bg-app-surface-subtle hover:text-app-text-primary',
-      ]" active-class="bg-app-primary-soft !text-app-primary font-semibold" exact
-        :title="isCollapsed ? 'Home' : undefined">
-        <Icon name="lucide:layout-grid" class="w-5 h-5 shrink-0" />
-        <span v-if="!isCollapsed">Home</span>
-      </nuxt-link-locale>
-
-      <nuxt-link-locale to="/history" :class="[
+    <nav class="flex-1 space-y-1 overflow-y-auto" aria-label="Main">
+      <nuxt-link-locale v-for="item in navItems" :key="item.to" :to="item.to" :exact="item.to === '/'" :class="[
         'w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-medium transition-colors',
         'text-app-text-secondary hover:bg-app-surface-subtle hover:text-app-text-primary',
       ]" active-class="bg-app-primary-soft !text-app-primary font-semibold"
-        :title="isCollapsed ? 'History' : undefined">
-        <Icon name="lucide:history" class="w-5 h-5 shrink-0" />
-        <span v-if="!isCollapsed">History</span>
-      </nuxt-link-locale>
-
-      <nuxt-link-locale to="/baby-profile" :class="[
-        'w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-medium transition-colors',
-        'text-app-text-secondary hover:bg-app-surface-subtle hover:text-app-text-primary',
-      ]" active-class="bg-app-primary-soft !text-app-primary font-semibold"
-        :title="isCollapsed ? 'Baby Profile' : undefined">
-        <Icon name="lucide:smile" class="w-5 h-5 shrink-0" />
-        <span v-if="!isCollapsed">Baby Profile</span>
-      </nuxt-link-locale>
-
-      <nuxt-link-locale to="/settings" :class="[
-        'w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-medium transition-colors',
-        'text-app-text-secondary hover:bg-app-surface-subtle hover:text-app-text-primary',
-      ]" active-class="bg-app-primary-soft !text-app-primary font-semibold"
-        :title="isCollapsed ? 'Settings' : undefined">
-        <Icon name="lucide:sliders-horizontal" class="w-5 h-5 shrink-0" />
-        <span v-if="!isCollapsed">Settings</span>
+        :title="isCollapsed ? item.label : undefined">
+        <Icon :name="item.icon" class="w-5 h-5 shrink-0" />
+        <span v-if="!isCollapsed">{{ item.label }}</span>
       </nuxt-link-locale>
     </nav>
 
@@ -154,6 +127,16 @@ const handleLocaleClick = () => {
 const isMounted = ref(false)
 onMounted(() => { isMounted.value = true })
 const isThemeActive = (mode: ThemeMode) => isMounted.value && props.currentTheme === mode
+
+const navItems = [
+  { to: '/', label: 'Home', icon: 'lucide:layout-grid' },
+  { to: '/timeline', label: 'Timeline', icon: 'lucide:git-commit-vertical' },
+  { to: '/quick-log', label: 'Quick Log', icon: 'lucide:zap' },
+  { to: '/daily-summary', label: 'Daily Summary', icon: 'lucide:chart-no-axes-column' },
+  { to: '/history', label: 'History', icon: 'lucide:history' },
+  { to: '/baby-profile', label: 'Baby Profile', icon: 'lucide:smile' },
+  { to: '/settings', label: 'Settings', icon: 'lucide:sliders-horizontal' },
+]
 
 const themeModes: { value: ThemeMode; label: string; icon: string }[] = [
   { value: 'light', label: 'Light theme', icon: 'lucide:sun' },

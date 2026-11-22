@@ -29,7 +29,7 @@
             <span :class="['hidden md:flex w-14 h-14 rounded-2xl items-center justify-center shrink-0', tile]">
               <Icon :name="icon" class="w-6 h-6" />
             </span>
-            <span :class="['md:hidden flex w-12 h-12 rounded-2xl items-center justify-center shrink-0', mobileTile || tile]">
+            <span v-if="!hideMobileIcon" :class="['md:hidden flex w-12 h-12 rounded-2xl items-center justify-center shrink-0', mobileTile || tile]">
               <Icon :name="mobileIcon || icon" class="w-6 h-6" />
             </span>
             <div class="min-w-0 flex-1">
@@ -60,6 +60,7 @@
 
           <!-- Footer -->
           <footer class="p-5 md:p-8 pt-3 md:pt-4 space-y-3">
+            <slot name="footer" :ask-discard="askDiscard" :request-close="requestClose" :save="() => emit('save')">
             <div class="flex flex-col md:flex-row md:items-stretch gap-2 md:gap-3">
               <button type="button" :disabled="saving"
                 class="order-2 md:order-1 px-6 py-3 md:py-3.5 text-sm md:text-base font-medium md:font-semibold text-app-text-secondary md:text-app-text-primary md:bg-app-surface-subtle md:hover:bg-app-border/40 hover:text-app-text-primary transition-colors focus-ring rounded-button md:rounded-2xl"
@@ -74,13 +75,7 @@
                 {{ saving ? 'Saving…' : saveLabel }}
               </button>
             </div>
-            <p class="hidden md:flex items-center justify-between text-xs text-app-text-secondary">
-              <span><kbd class="px-1.5 py-0.5 rounded bg-app-surface-subtle font-mono text-[10px]">Esc</kbd> to cancel</span>
-              <span>
-                <kbd class="px-1.5 py-0.5 rounded bg-app-surface-subtle font-mono text-[10px]">{{ isMac ? '⌘' : 'Ctrl' }}</kbd>
-                + <kbd class="px-1.5 py-0.5 rounded bg-app-surface-subtle font-mono text-[10px]">Enter</kbd> to save {{ hintNoun }}
-              </span>
-            </p>
+            </slot>
           </footer>
         </div>
       </div>
@@ -113,10 +108,10 @@
                 id="discard-title"
                 class="text-lg font-bold text-app-text-primary"
               >
-                Discard this entry?
+                {{ confirmTitle }}
               </h3>
               <p id="discard-desc" class="text-sm text-app-text-secondary mt-1">
-                Your entered notes and logs will not be saved.
+                {{ confirmText }}
               </p>
             </div>
           </div>
@@ -127,14 +122,14 @@
               class="py-3 min-h-[48px] rounded-button bg-app-surface-subtle text-sm font-semibold text-app-text-primary hover:bg-app-border/40 transition-colors focus-ring"
               @click="confirming = false"
             >
-              Keep Editing
+              {{ keepLabel }}
             </button>
             <button
               type="button"
               class="py-3 min-h-[48px] rounded-button bg-danger text-white text-sm font-semibold hover:opacity-90 active:scale-[0.98] transition-all focus-ring"
               @click="discard"
             >
-              Discard Entry
+              {{ confirmLabel }}
             </button>
           </div>
         </div>
@@ -157,17 +152,32 @@ const props = withDefaults(
     subtitleShort?: string;
     mobileIcon?: string;
     mobileTile?: string;
+    /** Phones show no icon tile (some designs omit it). */
+    hideMobileIcon?: boolean;
     /** True when the form has unsaved changes — closing then asks for confirmation. */
     dirty?: boolean;
     saving?: boolean;
     saveLabel?: string;
-    /** Used in the keyboard hint: "⌘ + Enter to save {hintNoun}" */
-    hintNoun?: string;
+    /** Copy for the discard confirmation. */
+    confirmTitle?: string;
+    confirmText?: string;
+    confirmLabel?: string;
+    keepLabel?: string;
   }>(),
-  { saveLabel: "Save Routine", hintNoun: "routine" },
+  {
+    saveLabel: "Save Routine",
+    confirmTitle: "Discard this entry?",
+    confirmText: "Your entered notes and logs will not be saved.",
+    confirmLabel: "Discard Entry",
+    keepLabel: "Keep Editing",
+  },
 );
 
-const emit = defineEmits<{ (e: "close"): void; (e: "save"): void }>();
+const emit = defineEmits<{
+  (e: "close"): void;
+  (e: "save"): void;
+  (e: "discard"): void;
+}>();
 
 const titleId = useId();
 const descId = useId();
@@ -189,9 +199,17 @@ const requestClose = () => {
   }
 };
 
+/** Open the confirmation directly (e.g. from a custom footer's Discard button). */
+const askDiscard = () => {
+  if (props.saving) return;
+  confirming.value = true;
+  nextTick(() => keepBtn.value?.focus());
+};
+
+// Confirmed: the parent decides what discarding means (close a draft, end a session…)
 const discard = () => {
   confirming.value = false;
-  emit("close");
+  emit("discard");
 };
 
 const FOCUSABLE =
