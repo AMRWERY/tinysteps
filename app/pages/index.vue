@@ -1,72 +1,63 @@
 <template>
-  <div class="contents">
-    <!-- Center Primary Content Column -->
-    <div class="flex-1 max-w-full min-w-0 space-y-5">
-      <!-- Baby Profile Hero Banner -->
-      <baby-profile-hero-banner />
+  <div class="w-full min-w-0">
+    <!-- Phones -->
+    <mobile-home
+      :state="currentState"
+      :timer-string="formattedTimer"
+      :is-paused="isPaused"
+      :entries="timelineEntries"
+      :totals="totals"
+      :sleep-subtitle="sleepSubtitle"
+      @update:state="currentState = $event"
+      @toggle-pause="isPaused = !isPaused"
+      @wake-and-save="wakeAndSave"
+      @start-nap="startNap"
+      @log="handleQuickLog"
+    />
 
-      <!-- Day at a Glance Summary Card -->
-      <desktop-nap-card
-        :state="napState"
-        :timer-string="formattedTimer"
-        :is-paused="isPaused"
-        @toggle-pause="isPaused = !isPaused"
-        @wake-and-save="handleWakeAndSave"
-        @start-nap="napState = 'active-sleep'" />
+    <!-- Medium and large screens -->
+    <div class="hidden md:flex flex-col xl:flex-row gap-6 items-start w-full max-w-[1240px] mx-auto">
+      <div class="flex-1 min-w-0 w-full space-y-6">
+        <preview-states-toolbar v-model="currentState" />
 
-      <!-- Instant Logging Hub Component -->
-      <quick-log-hub @log="handleQuickLog" />
+        <home-header :state="currentState" @quick-log="handleQuickLog('feed')" />
 
-      <!-- Today's Timeline Component -->
-      <timeline-section />
+        <nap-card
+          :state="currentState"
+          :timer-string="formattedTimer"
+          :is-paused="isPaused"
+          @toggle-pause="isPaused = !isPaused"
+          @wake-and-save="wakeAndSave"
+          @start-nap="startNap"
+        />
+
+        <quick-routines :sleep-subtitle="sleepSubtitle" @log="handleQuickLog" />
+
+        <timeline-section :entries="timelineEntries" />
+      </div>
+
+      <home-side-rail :totals="totals" />
     </div>
-
-    <!-- Right Column: Caregiver Rail -->
-    <right-caregiver-rail :caregiver="caregiver" />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Caregiver, AppState } from '~/types/home'
+const {
+  currentState, elapsedMinutes, isPaused, formattedTimer,
+  wakeAndSave, startNap, timelineEntries, totals,
+} = useRoutineState()
 
-const napState = ref<AppState>('active-sleep')
-const isPaused = ref(false)
-const elapsedSeconds = ref(48 * 60 + 19)
-
-onMounted(() => {
-  setInterval(() => {
-    if (napState.value === 'active-sleep' && !isPaused.value) {
-      elapsedSeconds.value++
-    }
-  }, 1000)
-})
-
-const formattedTimer = computed(() => {
-  const h = Math.floor(elapsedSeconds.value / 3600)
-  const m = Math.floor((elapsedSeconds.value % 3600) / 60)
-  const s = elapsedSeconds.value % 60
-  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
-})
-
-const caregiver: Caregiver = {
-  id: '1',
-  name: 'Alex',
-  role: 'Parent',
-  avatarUrl: '/img/img-01.png',
-  lastActive: '5m ago',
-  isOnline: true,
-}
-
-const handleWakeAndSave = () => {
-  napState.value = 'baby-awake'
-}
+const sleepSubtitle = computed(() =>
+  currentState.value === 'active-sleep' ? `Active now (${elapsedMinutes.value} mins)` : 'Last: 1h 20m ago',
+)
 
 const handleQuickLog = (type: string) => {
+  // TODO: open the log sheet / persist the event
   console.log('Quick log action triggered:', type)
 }
 
 useSeoMeta({
-  title: 'Tiny Steps - Baby Routine Tracker',
+  title: 'Home — TinySteps',
   description: 'Track your baby\'s daily routine including feeding, sleeping, and diaper changes.',
 })
 </script>

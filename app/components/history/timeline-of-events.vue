@@ -62,7 +62,14 @@
       <div class="hidden sm:block absolute left-[27px] top-8 bottom-6 w-px bg-app-border z-0 pointer-events-none">
       </div>
 
-      <div v-for="ev in events" :key="ev.id"
+      <template v-for="(ev, i) in events" :key="ev.id">
+      <!-- Period heading (phones only) -->
+      <p v-if="i === 0 || events[i - 1]?.period !== ev.period"
+        class="sm:hidden flex items-center gap-3 pt-2 text-[11px] font-bold uppercase tracking-wider text-app-text-secondary">
+        {{ ev.period }}
+        <span class="flex-1 h-px bg-app-border" />
+      </p>
+      <div
         class="relative bg-app-surface border border-app-border rounded-2xl p-4 sm:pl-14 flex items-start justify-between gap-3 hover:border-app-primary/40 transition-colors z-10">
 
         <!-- Timeline dot (desktop) -->
@@ -120,6 +127,7 @@
           <Icon name="lucide:more-vertical" class="w-4 h-4" />
         </button>
       </div>
+      </template>
     </div>
   </div>
 </template>

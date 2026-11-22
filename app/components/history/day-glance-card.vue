@@ -1,5 +1,43 @@
 <template>
-  <div class="bg-app-surface border border-app-border rounded-card p-4 sm:p-5 space-y-4 shadow-xs">
+  <!-- Phones: Daily Gentle Summary -->
+  <div class="sm:hidden bg-app-surface border border-app-border rounded-card p-4 space-y-3.5 shadow-xs">
+    <div class="flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <Icon name="lucide:bar-chart-2" class="w-4 h-4 text-app-primary" />
+        <h3 class="font-bold text-base text-app-text-primary leading-tight">Daily Gentle Summary</h3>
+      </div>
+      <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-app-primary-soft text-app-primary">
+        Mon Rhythm
+      </span>
+    </div>
+    <div class="grid grid-cols-3 gap-2 bg-app-surface-subtle rounded-2xl p-3 text-center">
+      <div>
+        <Icon name="lucide:milk" class="w-4 h-4 text-app-accent mx-auto" />
+        <p class="text-[11px] text-app-text-secondary mt-1">Feeds</p>
+        <p class="text-xl font-bold text-app-text-primary tabular-nums">{{ summary.feedCount }}</p>
+        <p class="text-[10px] text-app-text-secondary">380ml + nurse</p>
+      </div>
+      <div>
+        <Icon name="lucide:moon" class="w-4 h-4 text-app-primary mx-auto" />
+        <p class="text-[11px] text-app-text-secondary mt-1">Sleep</p>
+        <p class="text-xl font-bold text-app-text-primary tabular-nums">{{ summary.sleepDuration }}</p>
+        <p class="text-[10px] text-app-text-secondary">2 peaceful naps</p>
+      </div>
+      <div>
+        <Icon name="lucide:droplet" class="w-4 h-4 text-app-warning mx-auto" />
+        <p class="text-[11px] text-app-text-secondary mt-1">Diapers</p>
+        <p class="text-xl font-bold text-app-text-primary tabular-nums">{{ summary.diaperCount }}</p>
+        <p class="text-[10px] text-app-text-secondary">1 wet, 1 dirty</p>
+      </div>
+    </div>
+    <p class="flex items-start gap-2 text-[11px] italic text-app-text-secondary leading-relaxed">
+      <Icon name="lucide:sprout" class="w-3.5 h-3.5 text-app-primary shrink-0 mt-0.5" />
+      A calm snapshot of Monday's rhythm. Every day brings its own flow.
+    </p>
+  </div>
+
+  <!-- Tablet / desktop: Day at a Glance -->
+  <div class="hidden sm:block bg-app-surface border border-app-border rounded-card p-4 sm:p-5 space-y-4 shadow-xs">
     <!-- Card Header -->
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2.5">
