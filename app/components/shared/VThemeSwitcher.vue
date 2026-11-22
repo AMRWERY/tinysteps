@@ -4,8 +4,14 @@
       <button type="button"
         class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-input border border-border text-xs font-medium text-text-secondary hover:text-text-primary hover:bg-surface-subtle btn-press focus-ring"
         :aria-label="isDark ? 'Switch to Light theme' : 'Switch to Dark theme'" @click="toggleTheme">
-        <Icon :name="isDark ? 'lucide:sun' : 'lucide:moon'" class="w-3.5 h-3.5" />
-        <span>{{ isDark ? 'Light' : 'Dark' }}</span>
+        <span class="relative inline-flex w-3.5 h-3.5">
+          <Transition name="icon-rotate" mode="out-in">
+            <Icon :key="isDark ? 'sun' : 'moon'" :name="isDark ? 'lucide:sun' : 'lucide:moon'" class="w-3.5 h-3.5" />
+          </Transition>
+        </span>
+        <Transition name="swap" mode="out-in">
+          <span :key="isDark ? 'light' : 'dark'">{{ isDark ? 'Light' : 'Dark' }}</span>
+        </Transition>
       </button>
     </div>
 

@@ -25,7 +25,7 @@
 
       <!-- Main Desktop Area -->
       <div class="flex-1 min-w-0 flex flex-col min-h-screen">
-        <!-- Desktop Header Bar (always includes Theme & Locale toggles) -->
+        <!-- Desktop Header Bar (Theme & Locale toggles show here on medium screens only) -->
         <header
           class="sticky top-0 z-20 bg-app-bg/95 backdrop-blur-sm border-b border-app-border px-6 py-3.5 flex items-center justify-between"
         >
@@ -63,18 +63,17 @@
               <span>Sleep logging active</span>
             </div>
 
-            <!-- Toggle Locales Button -->
-            <LazyVLocaleSwitcher />
-
-            <!-- Toggle Theme Button (Displays Dark if Light selected, and Light if Dark selected) -->
-            <LazyVThemeSwitcher />
-
-            <!-- Baby profile avatar -->
-            <img
-              src="/img/baby-img-01.png"
-              alt="Maya"
-              class="w-8 h-8 rounded-full object-cover border border-app-border"
-            />
+            <!-- Medium screens only: the sidebar is a closed drawer here, so the controls and
+                 baby avatar live in the header. On lg+ they live in the sidebar instead. -->
+            <div class="flex items-center gap-3 lg:hidden">
+              <LazyVLocaleSwitcher />
+              <LazyVThemeSwitcher />
+              <img
+                src="/img/baby-img-01.png"
+                alt="Maya"
+                class="w-8 h-8 rounded-full object-cover border border-app-border"
+              />
+            </div>
           </div>
         </header>
 

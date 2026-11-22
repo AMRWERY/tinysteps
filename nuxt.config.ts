@@ -70,7 +70,14 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: "TinySteps — Baby Routine Tracker",
-      script: [{}],
+      script: [
+        {
+          // Apply the saved theme before first paint to avoid a light-theme flash on refresh
+          innerHTML: `(function(){try{var t=localStorage.getItem('tinysteps-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.classList.toggle('dark',t==='dark')}catch(e){}})()`,
+          tagPosition: 'head',
+          tagPriority: 'critical',
+        },
+      ],
       noscript: [],
       link: [{}],
       meta: [
