@@ -10,7 +10,7 @@
     <!-- Brand Header -->
     <div class="flex items-center gap-3 py-3 px-2 mb-6">
       <div class="w-10 h-10 rounded-xl bg-app-primary-soft text-app-primary flex items-center justify-center shrink-0">
-        <Icon name="lucide:map-pin" class="w-5 h-5" />
+         <img src="/img/logo.png" alt="logo" class="w-auto h-7">
       </div>
       <div v-if="!isCollapsed" class="overflow-hidden">
         <h1 class="font-bold text-base tracking-tight text-app-text-primary leading-tight">TinySteps</h1>

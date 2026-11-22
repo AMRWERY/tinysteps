@@ -52,7 +52,7 @@ const caregiver: Caregiver = {
   id: '1',
   name: 'Alex',
   role: 'Parent',
-  avatarUrl: '/img/img-01.png',
+  avatarUrl: '/img/baby-img-01.png',
   lastActive: '5m ago',
   isOnline: true,
 }

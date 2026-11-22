@@ -5,7 +5,7 @@
       class="sticky top-0 z-20 bg-app-bg/95 backdrop-blur-sm border-b border-app-border px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-2">
         <div class="w-8 h-8 rounded-lg bg-app-primary-soft text-app-primary flex items-center justify-center">
-          <Icon name="lucide:map-pin" class="w-4 h-4" />
+          <img src="/img/logo.png" alt="logo" class="w-auto h-5">
         </div>
         <span class="font-bold text-base text-app-text-primary">TinySteps</span>
         <span
@@ -20,7 +20,7 @@
 
         <LazyVThemeSwitcher />
 
-        <img src="/img/img-01.png" alt="Maya" class="w-8 h-8 rounded-full object-cover border border-app-border" />
+        <img src="/img/baby-img-01.png" alt="Maya" class="w-8 h-8 rounded-full object-cover border border-app-border" />
       </div>
     </header>
 
