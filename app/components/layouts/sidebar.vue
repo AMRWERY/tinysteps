@@ -24,9 +24,9 @@
         'w-full flex items-center gap-3 px-3 py-2.5 rounded-button text-sm font-medium transition-colors',
         'text-app-text-secondary hover:bg-app-surface-subtle hover:text-app-text-primary',
       ]" active-class="bg-app-primary-soft !text-app-primary font-semibold" exact
-        :title="isCollapsed ? 'Dashboard' : undefined">
+        :title="isCollapsed ? 'Home' : undefined">
         <Icon name="lucide:layout-grid" class="w-5 h-5 shrink-0" />
-        <span v-if="!isCollapsed">Dashboard</span>
+        <span v-if="!isCollapsed">Home</span>
       </nuxt-link-locale>
 
       <nuxt-link-locale to="/history" :class="[

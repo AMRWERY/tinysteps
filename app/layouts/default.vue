@@ -2,9 +2,11 @@
   <div
     class="min-h-screen bg-app-bg text-app-text-primary antialiased selection:bg-primary-soft selection:text-primary transition-colors duration-180"
   >
-    <!-- Desktop Layout Shell (hidden on mobile, matches Screenshot 1) -->
-    <div class="hidden md:flex min-h-screen">
-      <!-- Sidebar Component (from components/layouts/sidebar.vue) -->
+    <!-- Phone shell: top bar (bottom nav is rendered at the end) -->
+    <mobile-header />
+
+    <div class="md:flex min-h-screen">
+      <!-- Sidebar (md+; drawer on md, in-flow on lg+) -->
       <Sidebar
         :is-collapsed="isCollapsed"
         :is-mobile-open="isDrawerOpen"
@@ -23,11 +25,11 @@
         />
       </Transition>
 
-      <!-- Main Desktop Area -->
+      <!-- Main area -->
       <div class="flex-1 min-w-0 flex flex-col min-h-screen">
-        <!-- Desktop Header Bar (Theme & Locale toggles show here on medium screens only) -->
+        <!-- Header bar (md+). Theme & Locale toggles show here on medium screens only -->
         <header
-          class="sticky top-0 z-20 bg-app-bg/95 backdrop-blur-sm border-b border-app-border px-6 py-3.5 flex items-center justify-between"
+          class="hidden md:flex sticky top-0 z-20 bg-app-bg/95 backdrop-blur-sm border-b border-app-border px-6 py-3.5 items-center justify-between"
         >
           <div class="flex items-center gap-3">
             <!-- Medium screens: open/close the drawer -->
@@ -50,7 +52,7 @@
               <Icon name="lucide:panel-left" class="w-5 h-5" />
             </button>
             <span class="text-sm font-semibold text-app-text-secondary">
-              Today, {{ todayLabel }} • Week {{ babyWeek }}
+              Today, {{ todayLabel }} • Week {{ baby.week }}
             </span>
           </div>
 
@@ -69,95 +71,59 @@
               <LazyVLocaleSwitcher />
               <LazyVThemeSwitcher />
               <img
-                src="/img/baby-img-01.png"
-                alt="Maya"
+                :src="baby.avatarUrl"
+                :alt="baby.name"
                 class="w-8 h-8 rounded-full object-cover border border-app-border"
               />
             </div>
           </div>
         </header>
 
-        <!-- Main Desktop Content Slot -->
-        <main class="flex-1 p-6 flex gap-6 items-start justify-center">
+        <!-- Page content: pages own their padding on phones -->
+        <main class="flex-1 pb-24 md:pb-6 md:p-6 flex gap-6 items-start justify-center">
           <slot :is-collapsed="isCollapsed" />
         </main>
       </div>
     </div>
 
-    <!-- Mobile View Component (from components/home/mobile-refined-view.vue) -->
-    <mobile-refined-view
-      :state="mobileState"
-      :timer-string="formattedTimer"
-      :timeline="[]"
-      :current-theme="currentTheme"
-      @update:state="mobileState = $event"
-      @set-theme="setTheme"
-    />
+    <mobile-bottom-nav />
   </div>
 </template>
 
 <script lang="ts" setup>
-const { locale, locales } = useI18n();
-const { currentTheme, setTheme } = useAppTheme();
+const { locale, locales } = useI18n()
+const { currentTheme, setTheme } = useAppTheme()
+const { baby } = useBabyProfile()
 
 // Today's date, formatted for the active locale (e.g. "22 Nov")
-const today = new Date();
+const today = new Date()
 const todayLabel = computed(() =>
-  today.toLocaleDateString(locale.value, { day: "numeric", month: "short" }),
-);
+  today.toLocaleDateString(locale.value, { day: 'numeric', month: 'short' }),
+)
 
-// TODO: derive from the baby's birth date once the profile data is available
-const babyWeek = ref(14);
-
-const isCollapsed = ref(false);
-const isDrawerOpen = ref(false);
-const route = useRoute();
-watch(
-  () => route.fullPath,
-  () => {
-    isDrawerOpen.value = false;
-  },
-);
-const mobileState = ref<
-  "active-sleep" | "baby-awake" | "first-run" | "loading"
->("active-sleep");
-
-// Simple elapsed timer for the mobile state preview
-const elapsedSeconds = ref(48 * 60 + 19);
-
-onMounted(() => {
-  setInterval(() => {
-    if (mobileState.value === "active-sleep") elapsedSeconds.value++;
-  }, 1000);
-});
-
-const formattedTimer = computed(() => {
-  const h = Math.floor(elapsedSeconds.value / 3600);
-  const m = Math.floor((elapsedSeconds.value % 3600) / 60);
-  const s = elapsedSeconds.value % 60;
-  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-});
+const isCollapsed = ref(false)
+const isDrawerOpen = ref(false)
+const route = useRoute()
+watch(() => route.fullPath, () => { isDrawerOpen.value = false })
 
 const handleLogout = () => {
-  console.log("Logging out...");
-};
+  console.log('Logging out...')
+}
 
 const currentLocale = computed(() => {
-  return (locales.value as Array<{ code: string; dir?: string }>).find(
-    (l) => l.code === locale.value,
-  );
-});
+  return (locales.value as Array<{ code: string; dir?: string }>).find(l => l.code === locale.value)
+})
 
 const dir = computed(() => {
-  return currentLocale.value?.dir || (locale.value === "ar" ? "rtl" : "ltr");
-});
+  return currentLocale.value?.dir || (locale.value === 'ar' ? 'rtl' : 'ltr')
+})
 
 useHead({
   htmlAttrs: {
     lang: computed(() => locale.value),
     dir: dir,
   },
-});
+})
 </script>
 
 <style scoped>
